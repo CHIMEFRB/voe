@@ -1,8 +1,8 @@
-# voe
+# frb-voe
  Virtual Observatory Events for Fast Radio Bursts
 
 Layout:
-- L4 will send a dictionary contiaining all the information needed to create a VOEvent to voe.
+- observatory (L4) will send a dictionary contiaining all the information needed to create a VOEvent to voe.
 - voe will validate the dictionary, publish it to comet, publish it to a MongoDB
 - voe will also be able to read the MongoDB to submit events to the TNS
 
