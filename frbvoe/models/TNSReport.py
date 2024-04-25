@@ -1,6 +1,9 @@
-from typing import Literal, Optional
-from pydantic import BaseModel, Field, StrictFloat, StrictStr, EmailStr, StrictInt#, SecretStr
 from datetime import datetime
+from typing import Literal, Optional
+
+from pydantic import StrictFloat  # , SecretStr
+from pydantic import BaseModel, EmailStr, Field, StrictInt, StrictStr
+
 
 class TNSReport(BaseModel):
     """TNSReport Object.
@@ -43,22 +46,19 @@ class TNSReport(BaseModel):
         TNSReport: TNSReport object.
 
     TODO: example usage
-        
+
     """
+
     author: StrictStr = Field(
-        ..., 
-        description="Author name of the VOEvent", 
-        example="John Smith"
+        ..., description="Author name of the VOEvent", example="John Smith"
     )
     date: datetime = Field(
-        ..., 
-        description="Detection time of the FRB", 
-        example="2020-01-13 16:55:08.844845"
+        ...,
+        description="Detection time of the FRB",
+        example="2020-01-13 16:55:08.844845",
     )
     email: EmailStr = Field(
-        ..., 
-        description="Email of the author.", 
-        example="john.smith@email.com"
+        ..., description="Email of the author.", example="john.smith@email.com"
     )
     semi_major: float = Field(
         default=None,
@@ -84,7 +84,7 @@ class TNSReport(BaseModel):
         default=None,
         description="Bandwidth of the observatory in MHz.",
         example=400,
-    ) 
+    )
     central_frequency: float = Field(
         default=None,
         description="Central frequency of the observatory in MHz",
@@ -101,14 +101,14 @@ class TNSReport(BaseModel):
         example=2,
     )
     gain: float = Field(
-    default=None,
-    description="Gain of the observatory in dB.",
-    example=1.76,
+        default=None,
+        description="Gain of the observatory in dB.",
+        example=1.76,
     )
     tsys: float = Field(
-    default=None,
-    description="System temperature of the observatory in K.",
-    example=25.0,
+        default=None,
+        description="System temperature of the observatory in K.",
+        example=25.0,
     )
     beam_number: int = Field(
         default=None,
@@ -116,35 +116,35 @@ class TNSReport(BaseModel):
         example=2,
     )
     dm: float = Field(
-    default=None,
-    description="Dispersion measure of the FRB in pc/cm^3.",
-    example=298.53,
+        default=None,
+        description="Dispersion measure of the FRB in pc/cm^3.",
+        example=298.53,
     )
     dm_error: float = Field(
-    default=None,
-    description="Error of the dispersion measure of the FRB in pc/cm^3.",
-    example=0.01,
+        default=None,
+        description="Error of the dispersion measure of the FRB in pc/cm^3.",
+        example=0.01,
     )
     width: float = Field(
-    default=None,
-    description="Width in time of the FRB in ms.",
-    example=4.8,
+        default=None,
+        description="Width in time of the FRB in ms.",
+        example=4.8,
     )
     snr: float = Field(
-    default=None,
-    description="Signal-to-noise ratio of the FRB.",
-    example=13.8,
+        default=None,
+        description="Signal-to-noise ratio of the FRB.",
+        example=13.8,
     )
     flux: float = Field(
-    default=None,
-    description="Flux of the FRB in Jy.",
-    example=4.9,
+        default=None,
+        description="Flux of the FRB in Jy.",
+        example=4.9,
     )
     coordinate_system: Literal[
         "celestial",
         "horizontal",
         "galactic",
-        ] = Field(
+    ] = Field(
         ...,
         description="Coordinate system for the WhereWhen section. Required.",
         example="celestial",
@@ -171,6 +171,6 @@ class TNSReport(BaseModel):
         example=0.9979,
     )
     website: Optional[StrictStr] = Field(
-        default=None, 
+        default=None,
         description="Link to the observatory website",
     )

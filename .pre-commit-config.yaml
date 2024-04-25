@@ -1,0 +1,48 @@
+repos:
+  # Black code formatter, add a section to add a max line length of 88 characters
+
+  
+  - repo: https://github.com/psf/black
+    rev: 24.4.1
+    hooks:
+      - id: black
+        args: ['--line-length=88']
+
+  # Google style docstrings using pydocstyle
+  - repo: https://github.com/PyCQA/pydocstyle
+    rev: 6.3.0
+    hooks:
+      - id: pydocstyle
+        args: ['--convention=google']
+
+  # Detect secrets
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.4.0
+    hooks:
+      - id: detect-secrets
+
+  # Commitizen for commit messages
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v3.24.0
+    hooks:
+      - id: commitizen
+        stages: [commit-msg]
+
+  # Additional recommended hook: isort for Python import sorting
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        profile: black
+
+  # Additional recommended hook: flake8 for linting
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.0.0
+    hooks:
+      - id: flake8
+
+  # Additional recommended hook: mypy for static typing
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.10.0
+    hooks:
+      - id: mypy
