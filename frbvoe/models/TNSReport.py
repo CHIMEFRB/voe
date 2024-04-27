@@ -1,3 +1,5 @@
+"""Transient Name Server (TNS) Report Object."""
+
 from datetime import datetime
 from typing import Literal, Optional
 
@@ -80,7 +82,7 @@ class TNSReport(BaseModel):
         description="Sampling time of the observation.",
         example=0.001,
     )
-    sampling_time: float = Field(
+    bandwidth: float = Field(
         default=None,
         description="Bandwidth of the observatory in MHz.",
         example=400,
@@ -112,7 +114,9 @@ class TNSReport(BaseModel):
     )
     beam_number: int = Field(
         default=None,
-        description="Number of the beam in which the FRB was detected (for multi-beam observatories).",
+        description="""
+        Number of the beam in which the FRB was detected (for multi-beam observatories).
+        """,
         example=2,
     )
     dm: float = Field(
