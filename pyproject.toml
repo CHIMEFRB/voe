@@ -10,6 +10,7 @@ python = "^3.10"
 pydantic-settings = "^2.2.1"
 requests = "^2.31.0"
 pydantic = {version = "^2.7.1", extras = ["email"]}
+picologging = "^0.9.3"
 
 
 [tool.poetry.group.dev.dependencies]

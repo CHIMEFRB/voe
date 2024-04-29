@@ -3,12 +3,16 @@
 from datetime import datetime
 from typing import Literal, Optional
 
-from pydantic import StrictFloat  # , SecretStr
-from pydantic import BaseModel, EmailStr, Field, StrictInt, StrictStr
+from pydantic import StrictFloat
+from pydantic import EmailStr, Field, StrictInt, StrictStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from frbvoe.utilities import comet, email, tns
 
+import picologging as logging
+logging.basicConfig()
+
+log = logging.getLogger()
 
 class VOEvent(BaseSettings):
     """VOEvent Object.
@@ -237,6 +241,12 @@ class VOEvent(BaseSettings):
         description="Transient Name Server name of the FRB",
         example="FRB20210826A",
     )
+
+    @property
+    def payload(self):
+        """Return the VOEvent payload."""
+        log.info("Returning VOEvent payload")
+        return self.dict()
 
     def tns_submit(self, api_key, tns_id, bot_name, tns_marker, url):
         """Submit the VOEvent to the Transient Name Server."""
