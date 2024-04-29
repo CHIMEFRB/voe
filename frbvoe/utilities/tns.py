@@ -25,7 +25,8 @@ def submit(voevent, api_key, tns_id, bot_name, tns_marker, url):
     Returns:
         requests.Response: The response object from the TNS API.
     """
-    headers = {"User-Agent": tns_marker}
-    json_data = {"api_key": api_key, "data": voevent}
-    response = requests.post(url, headers=headers, data=json_data)
-    return response
+    # headers = {"User-Agent": tns_marker}
+    # json_data = {"api_key": api_key, "data": voevent}
+    # response = requests.post(url, headers=headers, data=json_data)
+    # return response
+    pass

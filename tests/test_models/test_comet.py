@@ -1,17 +1,29 @@
 import pytest
 
-from frbvoe.models.voe import VOEvent
+from frbvoe.models.comet import Comet
 
 
-def test_bad_voe(voe, test_parameter, test_value):
+def test_report(voe, test_parameter, test_value):
+    with pytest.raises(ValueError):
+        voe[test_parameter] = test_value
+        print(voe)
+
+
+def test_retract(voe, test_parameter, test_value):
+    with pytest.raises(ValueError):
+        voe[test_parameter] = test_value
+        print(voe)
+
+
+def test_update(voe, test_parameter, test_value):
     with pytest.raises(ValueError):
         voe[test_parameter] = test_value
         print(voe)
 
 
 # Example usage
-sample_voe = VOEvent(
-    voe_type="detection",
+sample_voe = Comet(
+    kind="detection",
     author="John Smith",
     email="john.smith@email.com",
     coordinate_system="celestial",
@@ -40,5 +52,3 @@ sample_voe = VOEvent(
     snr=13.8,
     flux=4.9,
 )
-
-# test_bad_voe(sample_voe, "voe_type", "bad_type")

@@ -9,3 +9,10 @@ Layout:
 
 Desired Features:
 - easy installation through docker to compose the voe service, MongoDB, and comet service in one swoop
+
+Environment variables: To use the service, you must have the following environment variables defined in your bash profile. TNS Bots can be registered here: https://www.wis-tns.org/bots.
+- FRB_VOE_TNS_API_KEY
+- FRB_VOE_TNS_BOT_NAME
+- FRB_VOE_TNS_BOT_ID
+- FRB_VOE_EMAIL_ADDRESS
+- FRB_VOE_EMAIL_PASSWORD
