@@ -5,14 +5,25 @@ from typing import Literal, Optional
 
 from pydantic import StrictFloat  # , SecretStr
 from pydantic import BaseModel, EmailStr, Field, StrictInt, StrictStr
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from frbvoe.utilities import tns, comet, email
+from frbvoe.utilities import comet, email, tns
 
-class VOEvent(BaseModel):
+
+class VOEvent(BaseSettings):
     """VOEvent Object.
 
     Args:
         BaseModel (BaseModel): Pydantic BaseModel.
+
+    Note:
+        The selection priority for attributes in descending order is:
+
+          - Arguments passed to the `VOEvent` Object.
+          - Environment variables with `FRB_VOE_` prefix.
+          - Variables from /run/secrets secrets directory.
+          - The default values in the class constructor.
+
 
     Attributes:
         # VOE Header
@@ -69,6 +80,17 @@ class VOEvent(BaseModel):
 
     """
 
+    model_config = SettingsConfigDict(
+        title="FRB VOEvent",
+        validate_assignment=True,
+        validate_return=True,
+        revalidate_instances="always",
+        env_prefix="FRB_VOE_",
+        secrets_dir="/run/secrets",
+        # This parameters ignores any extra fields that are not defined in the model
+        extra="ignore",
+    )
+    #! TODO: Think is kind, is a better name for this field
     voe_type: Literal[
         "detection",
         "subsequent",
@@ -215,64 +237,46 @@ class VOEvent(BaseModel):
         description="Transient Name Server name of the FRB",
         example="FRB20210826A",
     )
+
     def tns_submit(self, api_key, tns_id, bot_name, tns_marker, url):
         """Submit the VOEvent to the Transient Name Server."""
 
         tns.submit(self.dict(), api_key, tns_id, bot_name, tns_marker, url)
+
     def comet_report(self, comet_url):
         """Report the FRB to the Comet server."""
-            
+
         comet.report(self.dict(), comet_url)
+
     def comet_retraction(self, comet_url):
         """Retract the FRB from the Comet server."""
-            
+
         comet.retract(self.dict(), comet_url)
+
     def comet_update(self, comet_url):
         """Update the FRB on the Comet server."""
-            
+
         comet.update(self.dict(), comet_url)
+
     def email_report(self, sender_email, receiver_email, password, subject, message):
         """Send the VOEvent via email."""
-            
-        email.report(self.dict(), sender_email, receiver_email, password, subject, message)
-    def email_retraction(self, sender_email, receiver_email, password, subject, message):
+
+        email.report(
+            self.dict(), sender_email, receiver_email, password, subject, message
+        )
+
+    def email_retraction(
+        self, sender_email, receiver_email, password, subject, message
+    ):
         """Send the VOEvent retraction via email."""
-            
-        email.retract(self.dict(), sender_email, receiver_email, password, subject, message)
+
+        email.retract(
+            self.dict(), sender_email, receiver_email, password, subject, message
+        )
+
     def email_update(self, sender_email, receiver_email, password, subject, message):
         """Send the VOEvent update via email."""
-            
-        email.update(self.dict(), sender_email, receiver_email, password, subject, message)
 
-# Example usage
-sample_voe = VOEvent(
-    voe_type="detection",
-    author="John Smith",
-    email="john.smith@email.com",
-    coordinate_system="celestial",
-    right_ascension=55.2938,
-    declination=14.2049,
-    localization_error=0.1,
-    importance=0.9979,
-    website="https://www.example.com",
-    backend_url="https://www.example.com/backend",
-    tns_name="FRB20210826A",
-    date="2020-01-13 16:55:08.844845",
-    semi_major=0.026,
-    semi_minor=0.013,
-    ellipse_error=0.001,
-    sampling_time=0.001,
-    bandwidth=400,
-    central_frequency=600,
-    npol=2,
-    bits_per_sample=2,
-    gain=1.76,
-    tsys=25.0,
-    beam_number=2,
-    dm=298.53,
-    dm_error=0.01,
-    width=4.8,
-    snr=13.8,
-    flux=4.9,
-)
-print(sample_voe)
+        email.update(
+            self.dict(), sender_email, receiver_email, password, subject, message
+        )
