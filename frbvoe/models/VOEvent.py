@@ -6,6 +6,7 @@ from typing import Literal, Optional
 from pydantic import StrictFloat  # , SecretStr
 from pydantic import BaseModel, EmailStr, Field, StrictInt, StrictStr
 
+from frbvoe.utilities import tns, comet, email
 
 class VOEvent(BaseModel):
     """VOEvent Object.
@@ -214,7 +215,34 @@ class VOEvent(BaseModel):
         description="Transient Name Server name of the FRB",
         example="FRB20210826A",
     )
+    def tns_submit(self, api_key, tns_id, bot_name, tns_marker, url):
+        """Submit the VOEvent to the Transient Name Server."""
 
+        tns.submit(self.dict(), api_key, tns_id, bot_name, tns_marker, url)
+    def comet_report(self, comet_url):
+        """Report the FRB to the Comet server."""
+            
+        comet.report(self.dict(), comet_url)
+    def comet_retraction(self, comet_url):
+        """Retract the FRB from the Comet server."""
+            
+        comet.retract(self.dict(), comet_url)
+    def comet_update(self, comet_url):
+        """Update the FRB on the Comet server."""
+            
+        comet.update(self.dict(), comet_url)
+    def email_report(self, sender_email, receiver_email, password, subject, message):
+        """Send the VOEvent via email."""
+            
+        email.report(self.dict(), sender_email, receiver_email, password, subject, message)
+    def email_retraction(self, sender_email, receiver_email, password, subject, message):
+        """Send the VOEvent retraction via email."""
+            
+        email.retract(self.dict(), sender_email, receiver_email, password, subject, message)
+    def email_update(self, sender_email, receiver_email, password, subject, message):
+        """Send the VOEvent update via email."""
+            
+        email.update(self.dict(), sender_email, receiver_email, password, subject, message)
 
 # Example usage
 sample_voe = VOEvent(

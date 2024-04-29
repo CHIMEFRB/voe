@@ -33,7 +33,7 @@ repos:
     rev: 5.13.2
     hooks:
       - id: isort
-        profile: black
+        args: ['--profile', 'black']
 
   # Additional recommended hook: flake8 for linting
   - repo: https://github.com/pycqa/flake8
