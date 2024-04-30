@@ -1,11 +1,11 @@
 """this function sends an email."""
 
-import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
+# import smtplib
+# from email.mime.multipart import MIMEMultipart
+# from email.mime.text import MIMEText
 
 
-def report(voevent, sender_email, password, subject, message):
+def report(voevent):
     """Send the VOEvent via email.
 
     Args:
@@ -41,7 +41,7 @@ def report(voevent, sender_email, password, subject, message):
     pass
 
 
-def retract(voevent, sender_email, password, subject, message):
+def retract(voevent):
     """Send the VOEvent retraction via email.
 
     Args:
@@ -77,7 +77,7 @@ def retract(voevent, sender_email, password, subject, message):
     pass
 
 
-def update(voevent, sender_email, password, subject, message):
+def update(voevent):
     """Send the VOEvent update via email.
 
     Args:

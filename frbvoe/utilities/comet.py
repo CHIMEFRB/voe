@@ -1,7 +1,5 @@
 """Comet VOEvent broker."""
 
-import requests
-
 
 def report(voevent, comet_url):
     """Report the FRB to the Comet server."""

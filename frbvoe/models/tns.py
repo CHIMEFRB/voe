@@ -3,7 +3,8 @@
 from typing import Any, Dict
 
 import picologging as logging
-import requests
+
+# import requests
 from pydantic import Field
 
 from frbvoe.models.voe import VOEvent
@@ -28,9 +29,7 @@ class TNS(VOEvent):
     tns_id: int = Field(..., description="ID for the TNS", example="1234567890")
 
     @property
-    def submit(
-        self, voevent: Dict[str, Any], api_key, tns_id, bot_name, tns_marker, url
-    ):
+    def submit(voevent: Dict[str, Any]):
         """Submits a VOEvent to the TNS API.
 
         Args:
@@ -47,16 +46,10 @@ class TNS(VOEvent):
         Raises:
             requests.HTTPError: If the request to the TNS API fails.
         """
-        headers = {"User-Agent": tns_marker}
-        json_data = {"api_key": api_key, "data": voevent}
+        # headers = {"User-Agent": tns_marker}
+        # json_data = {"api_key": api_key, "data": voevent}
         log.info("Sending VOE payload to TNS.")
-        response = requests.post(url, headers=headers, data=json_data)
-        response.raise_for_status()
-        return response
-
-
-# TODO: Functionality
-# from frbvoe.models.voe import VOEvent
-
-# voe = VOEvent(...)
-# tns = TNS(**voe.payload)
+        # response = requests.post(url, headers=headers, data=json_data)
+        # response.raise_for_status()
+        # return response
+        pass

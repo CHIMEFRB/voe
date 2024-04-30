@@ -2,8 +2,6 @@
 
 import logging
 
-import requests
-
 # from typing import Union
 
 

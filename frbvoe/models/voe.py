@@ -25,22 +25,22 @@ class VOEvent(BaseSettings):
           - The default values in the class constructor.
 
     Attributes:
-        kind (str): Kind of the VOEvent. Required.
-            -One of: detection, subsequent, retraction, or update
+        kind (str): Which kind of VOEvent. Required.
+            - One of: detection, subsequent, retraction, or update
         *token (SecretStr): Github Personal Access Token. Optional*
-        author (str): Author name of the VOEvent. Required.
-        email (EmailStr): Email address of the author. Required.
-        semi_major (float): Semi-major axis of the error ellipse. Optional.
-        semi_minor (float): Semi-minor axis of the error ellipse. Optional.
-        ellipse_error (float): Position angle of the error ellipse. Optional.
+        author (str): Name of the VOEvent author. Required.
+        date (datetime): Detection time of the FRB. Required.
+        email (EmailStr): Email address of the VOEvent author. Required.
+        semi_major (float): Semi-major axis of the error ellipse of the
+        host observatory's beam. Optional.
+        semi_minor (float): Semi-minor axis of the error ellipse of the
+        host observatory's beam. Optional.
         sampling_time (float): Sampling time of the observation. Optional.
         bandwidth (float): Bandwidth of the observation. Optional.
         central_frequency (float): Central frequency of the observation. Optional.
-        npol (int): Number of polarizations. Optional.
-        bits_per_sample (int): Bits per sample. Optional.
+        npol (int): Number of polarizations of the observation. Optional.
         gain (float): Gain of the observation. Optional.
         tsys (float): System temperature of the observation. Optional.
-        beam_number (int): Beam number of the observation. Optional.
         dm (float): Dispersion measure of the observation. Optional.
         dm_error (float): Error in the dispersion measure. Optional.
         width (float): Width of the pulse. Optional.
@@ -52,7 +52,7 @@ class VOEvent(BaseSettings):
         declination (float): Declination of the observation. Required.
         localization_error (float): Localization error of the observation. Optional.
         importance (float): Importance of the observation between 0 and 1. Optional.
-        website (str): Website of the author observatory. Optional.
+        website (str): Website of the host observatory. Optional.
         tns_name (str): TNS name of the event. Optional.
 
     Raises:
@@ -76,145 +76,128 @@ class VOEvent(BaseSettings):
         "subsequent",
         "retraction",
         "update",
-    ] = Field(
-        ...,
-        description="Type of VOEvent. Required.",
-        example="detection",
-    )
+    ] = Field(..., description="Which kind of VOEvent. Required.", example="detection")
     author: StrictStr = Field(
-        ..., description="Author name of the VOEvent", example="John Smith"
+        ..., description="Name of the VOEvent author. Required.", example="John Smith"
     )
     date: datetime = Field(
         ...,
-        description="Detection time of the FRB",
+        gt=datetime(2024, 5, 1),  # release date of frb-voe
+        description="Detection time of the FRB. Required.",
         example="2020-01-13 16:55:08.844845",
     )
     email: EmailStr = Field(
-        ..., description="Email of the author.", example="john.smith@email.com"
+        ...,
+        description="Email address of the VOEvent author. Required.",
+        example="john.smith@email.com",
     )
     semi_major: float = Field(
         default=None,
-        description="Size of the telescope's beam's semi-major axis in degrees.",
+        gt=0.0,
+        description="""Semi-major axis of the error ellipse
+        of the host observatory's beam in degrees. Optional.""",
         example=0.026,
     )
     semi_minor: float = Field(
         default=None,
-        description="Size of the telescope's beam's semi-minor axis in degrees.",
+        gt=0.0,
+        description="""Semi-minor axis of the error ellipse
+        of the host observatory's beam in degrees. Optional.""",
         example=0.013,
-    )
-    ellipse_error: float = Field(
-        default=None,
-        description="Error of the telescope's beam ellipse in degrees.",
-        example=0.001,
     )
     sampling_time: float = Field(
         default=None,
-        description="Sampling time of the observation.",
+        gt=0.0,
+        description="Sampling time of the observation in seconds. Optional.",
         example=0.001,
     )
     bandwidth: float = Field(
         default=None,
-        description="Bandwidth of the observatory in MHz.",
+        gt=0.0,
+        description="Bandwidth of the observatory in MHz. Optional.",
         example=400,
     )
     central_frequency: float = Field(
         default=None,
-        description="Central frequency of the observatory in MHz",
+        gt=0.0,
+        description="Central frequency of the observatory in MHz. Optional.",
         example=600,
     )
     npol: StrictInt = Field(
         default=None,
-        description="Number of polarizations.",
-        example=2,
-    )
-    bits_per_sample: StrictInt = Field(
-        default=None,
-        description="Number of bits per sample.",
+        gt=0,
+        description="Number of polarizations of the observation. Optional.",
         example=2,
     )
     gain: float = Field(
         default=None,
-        description="Gain of the observatory in dB.",
+        description="Gain of the observatory in dB. Optional.",
         example=1.76,
     )
     tsys: float = Field(
         default=None,
-        description="System temperature of the observatory in K.",
+        gt=0.0,
+        description="System temperature of the observatory in K. Optional.",
         example=25.0,
-    )
-    beam_number: int = Field(
-        default=None,
-        description="""
-        Number of the beam in which the FRB was detected (for multi-beam observatories).
-        """,
-        example=2,
     )
     dm: float = Field(
         default=None,
-        description="Dispersion measure of the FRB in pc/cm^3.",
+        gt=0.0,
+        description="Dispersion measure of the FRB in pc/cm^3. Optional.",
         example=298.53,
     )
     dm_error: float = Field(
         default=None,
-        description="Error of the dispersion measure of the FRB in pc/cm^3.",
+        gt=0.0,
+        description="Error of the dispersion measure of the FRB in pc/cm^3. Optional.",
         example=0.01,
     )
     width: float = Field(
         default=None,
-        description="Width in time of the FRB in ms.",
+        description="Width in time of the FRB in s. Optional.",
         example=4.8,
     )
     snr: float = Field(
         default=None,
-        description="Signal-to-noise ratio of the FRB.",
+        description="Signal-to-noise ratio of the FRB. Optional.",
         example=13.8,
     )
     flux: float = Field(
-        default=None,
-        description="Flux of the FRB in Jy.",
-        example=4.9,
-    )
-    coordinate_system: Literal[
-        "celestial",
-        "horizontal",
-        "galactic",
-    ] = Field(
-        ...,
-        description="Coordinate system for the WhereWhen section. Required.",
-        example="celestial",
+        default=None, description="Flux of the FRB in Jy. Optional.", example=4.9
     )
     right_ascension: float = Field(
         ge=0.0,
         le=360.0,
-        description="Right acension of the FRB in degrees (0 < RA < 360).",
+        description="""Right acension of the FRB in degrees
+        in degrees (0 < RA < 360). Required.""",
         example=55.2938,
     )
     declination: float = Field(
         ge=-90.0,
         le=90.0,
-        description="Declination of the FRB in degrees (-90 < Dec < 90).",
+        description="Declination of the FRB in degrees (-90 ≤ Dec ≤ 90). Required.",
         example=14.2049,
     )
     localization_error: Optional[StrictFloat] = Field(
-        default=None, description="Error of the localization region."
+        default=None,
+        gt=0.0,
+        description="Error of the localization region in degrees. Required.",
+        example=0.001,
     )
     importance: float = Field(
+        default=None,
         ge=0.0,
         le=1.0,
-        description="Importance of the FRB (0 < Importance < 1).",
+        description="Importance of the FRB (0 < Importance < 1). Optional.",
         example=0.9979,
     )
     website: Optional[StrictStr] = Field(
         default=None,
-        description="Link to the observatory website",
-    )
-    backend_url: Optional[StrictStr] = Field(
-        default=None,
-        description="Link to more information about the observatory backend",
+        description="Link to the host observatory website. Optional.",
     )
     tns_name: Optional[StrictStr] = Field(
         default=None,
-        description="Transient Name Server name of the FRB",
+        description="Transient Name Server name of the FRB. Optional.",
         example="FRB20210826A",
     )
 
@@ -223,3 +206,10 @@ class VOEvent(BaseSettings):
         """Return the VOEvent payload."""
         log.info("Returning VOEvent payload")
         return self.dict()
+
+
+# TODO: Functionality
+# from frbvoe.models.voe import VOEvent
+
+# voe = VOEvent(...)
+# tns = TNS(**voe.payload)

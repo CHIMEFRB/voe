@@ -3,7 +3,6 @@
 from typing import Any, Dict
 
 import picologging as logging
-import requests
 from pydantic import Field
 from utilities.email import report, retract, update
 
@@ -20,7 +19,7 @@ class Email(VOEvent):
     password: str = Field(..., description="Marker for the TNS", example="FRB")
 
     @property
-    def report(self, voevent: Dict[str, Any]):
+    def report(voevent: Dict[str, Any]):
         """Sends the VOEvent email.
 
         Args:
@@ -29,30 +28,23 @@ class Email(VOEvent):
         Returns:
             None
         """
-        subject = "Subject"
-        email_message = "This is the email"
+        # subject = "Subject"
+        # email_message = "This is the email"
         log.info("Sending VOE payload to Email as a report.")
-        report(voevent, self.username, self.password, subject, email_message)
+        report(voevent)
 
     @property
-    def retract(self):
+    def retract(voevent: Dict[str, Any]):
         """Retract the FRB from the Comet server."""
-        subject = "Subject"
-        email_message = "This is the email"
+        # subject = "Subject"
+        # email_message = "This is the email"
         log.info("Sending VOE payload to Email as a retraction.")
-        retract(self.dict(), self.username, self.password, subject, email_message)
+        retract(voevent)
 
     @property
-    def update(self):
+    def update(voevent: Dict[str, Any]):
         """Update the FRB on the Comet server."""
-        subject = "Subject"
-        email_message = "This is the email"
+        # subject = "Subject"
+        # email_message = "This is the email"
         log.info("Sending VOE payload to Email as an update.")
-        update(self.dict(), self.username, self.password, subject, email_message)
-
-
-# TODO: Functionality
-# from frbvoe.models.voe import VOEvent
-
-# voe = VOEvent(...)
-# tns = TNS(**voe.payload)
+        update(voevent)
