@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/github/CHIMEFRB/voe/badge.svg?branch=main)](https://coveralls.io/github/CHIMEFRB/voe?branch=main)
+---
 # Overview : A Telescope-Agnostic FRB Virtual Observatory Event (VOEvent) Service
 
 `frb-voe` is a telescope-agnostic server for publishing, broadcasting, and recording Virtual Observatory Events (VOEvents) for detections of Fast Radio Bursts (FRBs). Telescopes and observatories that are actively detecting or following up FRBs in the radio regime can establish a subscription-based FRB VOEvent service using `frb-voe`. The core functionality of the code base is the following tasks:
