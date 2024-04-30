@@ -9,7 +9,27 @@
 
 
 # Installation
-TBD
+## Dependencies Installation
+
+The following are instructions for installing the frb-voe package and running the TNS service.
+
+First, `cd` into your preferred path `/my/path` and clone the repository.
+
+```
+git clone git@github.com:CHIMEFRB/voe.git
+```
+
+Now, install `poetry` with
+
+```
+pip install poetry
+```
+
+Then install the requirements using `poetry` by running the following in the top-level folder where the `poetry.lock` file is found.
+
+```
+poetry install
+```
 
 # Getting Started
 
@@ -33,28 +53,6 @@ All programmatic requests to the TNS require authentication. This in turn requir
 export TNS_API_KEY=""       # Alphanumeric API key for your TNS bot
 export TNS_API_TNS_ID=""    # ID number for your TNS bot
 export TNS_API_BOT_NAME=""  # Name of your TNS bot
-```
-
-## Dependencies Installation
-
-The following are instructions for installing the frb-voe package and running the TNS service.
-
-First, `cd` into your preferred path `/my/path` and clone the repository.
-
-```
-git clone git@github.com:CHIMEFRB/frb-voe.git
-```
-
-Now, install `poetry` with
-
-```
-pip install poetry
-```
-
-Then install the requirements using `poetry` by running the following in the top-level folder where the `poetry.lock` file is found.
-
-```
-poetry install
 ```
 
 ## MongoDB Setup
