@@ -1,14 +1,16 @@
 """format a VOE for a TNS submission."""
 
-import picologging as logging
 from typing import Any, Dict
-from pydantic import Field, SecretInt
+
+import picologging as logging
+from pydantic import Field
 
 from frbvoe.models.voe import VOEvent
-from utilities.comet import report, retract, update
+from frbvoe.utilities.comet import report, retract, update
 
 logging.basicConfig()
 log = logging.getLogger()
+
 
 class Comet(VOEvent):
     """Represents a comet object that extends the VOEvent class.
@@ -16,10 +18,11 @@ class Comet(VOEvent):
     Tokenized Attributes:
         comet_port (SecretInt) : Port of the comet broker. Optional
     """
-    comet_port : SecretInt = Field(
-        default=None, 
-        description= "Port of the comet broker. Optional."
+
+    comet_port: int = Field(
+        default=None, description="Port of the comet broker. Optional."
     )
+
     @property
     def report(comet_report: Dict[str, Any]):
         """Sends a report using the given VOEvent and comet URL.

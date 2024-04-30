@@ -4,11 +4,12 @@ from datetime import datetime
 from typing import Literal, Optional
 
 import picologging as logging
-from pydantic import EmailStr, Field, StrictFloat, StrictInt, StrictStr, SecretInt, SecretStr
+from pydantic import EmailStr, Field, StrictFloat, StrictInt, StrictStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 logging.basicConfig()
 log = logging.getLogger()
+
 
 class VOEvent(BaseSettings):
     """VOEvent Object.
@@ -25,7 +26,7 @@ class VOEvent(BaseSettings):
 
     Tokenized Attributes:
         TODO: DB interaction tokens? (Q4 Shiny)
-    
+
     Attributes:
         kind (str): Which kind of VOEvent. Required.
             - One of: detection, subsequent, retraction, or update
@@ -62,6 +63,7 @@ class VOEvent(BaseSettings):
     Returns:
         VOEvent: VOEvent object.
     """
+
     model_config = SettingsConfigDict(
         title="FRB VOEvent",
         validate_assignment=True,
@@ -82,7 +84,7 @@ class VOEvent(BaseSettings):
     )
     date: datetime = Field(
         ...,
-        gt=datetime(2024, 5, 1),  # release date of frb-voe
+        gt=datetime(2024, 1, 1),  # release date of frb-voe
         description="Detection time of the FRB. Required.",
         example="2020-01-13 16:55:08.844845",
     )

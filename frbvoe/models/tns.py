@@ -1,10 +1,12 @@
 """format a VOE for a TNS submission."""
 
-import picologging as logging
-# import requests
-from pydantic import Field, SecretInt, SecretStr
-from pydantic_settings import SettingsConfigDict
 from typing import Any, Dict
+
+import picologging as logging
+
+# import requests
+from pydantic import Field, SecretStr
+from pydantic_settings import SettingsConfigDict
 
 from frbvoe.models.voe import VOEvent
 
@@ -20,6 +22,7 @@ class TNS(VOEvent):
         tns_report_id (SecretInt): Report ID for the TNS submission. Required.
         tns_bot_name (SecretStr): Name of the TNS bot. Required.
     """
+
     model_config = SettingsConfigDict(
         title="TNS Report",
         validate_assignment=True,
@@ -30,17 +33,14 @@ class TNS(VOEvent):
         extra="ignore",
     )
     tns_api_key: SecretStr = Field(
-        ..., 
+        ...,
         description="API key for the TNS. Required.",
     )
-    tns_report_id: SecretInt = Field(
-        ..., 
-        description="Report ID for the TNS submission. Required."
-        )
-    tns_bot_name: SecretStr = Field(
-        ..., 
-        description="Name of the TNS bot. Required."
-        )
+    tns_report_id: int = Field(
+        ..., description="Report ID for the TNS submission. Required."
+    )
+    tns_bot_name: SecretStr = Field(..., description="Name of the TNS bot. Required.")
+
     @property
     def submit(tns_report: Dict[str, Any]):
         """Submits a VOEvent to the TNS API.

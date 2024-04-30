@@ -1,0 +1,69 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  pre-commit-checks:
+    runs-on: ubuntu-latest
+    steps:
+    -
+      name: Setup code repository
+      uses: actions/checkout@v4
+    -
+      name: Install poetry
+      run: |
+        pipx install poetry
+    -
+      name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        cache: 'poetry'
+    -
+      name: Install CHIMEFRB/voe
+      run: |
+        poetry install --with dev
+    -
+      name: Run pre-commit checks
+      run: |
+        poetry run pre-commit run --all-files
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ['3.10', '3.11']
+    steps:
+    -
+      name: Setup code repository
+      uses: actions/checkout@v4
+    -
+      name: Install poetry
+      run: |
+        pipx install poetry
+    -
+      name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'poetry'
+    -
+      name: Install CHIMEFRB/voe
+      run: |
+        poetry install --with dev
+    -
+      name: Execute tests
+      run: |
+        poetry run pytest --cov . --cov-report=lcov -s -v
+    -
+      name: Upload coverage report
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        path-to-lcov: "coverage.lcov"

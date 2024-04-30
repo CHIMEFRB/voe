@@ -1,7 +1,7 @@
 """Comet VOEvent broker."""
 
 
-def report(voevent, comet_url):
+def report(voevent):
     """Report the FRB to the Comet server."""
     # # Format the Comet request
     # voevent["role"] = "observation"
@@ -13,10 +13,10 @@ def report(voevent, comet_url):
     #     return True
     # else:
     #     return False
-    return comet_url + " " + voevent
+    return voevent
 
 
-def retract(voevent, comet_url):
+def retract(voevent):
     """Retract the FRB from the Comet server."""
     # # Format the Comet request
     # voevent["role"] = "retraction"
@@ -31,7 +31,7 @@ def retract(voevent, comet_url):
     pass
 
 
-def update(voevent, comet_url):
+def update(voeventl):
     """Update the FRB on the Comet server."""
     # # Format the Comet request
     # voevent["role"] = "update"
