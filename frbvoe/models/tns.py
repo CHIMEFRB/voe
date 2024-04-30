@@ -1,11 +1,10 @@
 """format a VOE for a TNS submission."""
 
-from typing import Any, Dict
-
 import picologging as logging
-
 # import requests
-from pydantic import Field
+from pydantic import Field, SecretInt, SecretStr
+from pydantic_settings import SettingsConfigDict
+from typing import Any, Dict
 
 from frbvoe.models.voe import VOEvent
 
@@ -16,29 +15,38 @@ log = logging.getLogger()
 class TNS(VOEvent):
     """Represents a TNS (Transient Name Server) object.
 
-    Attributes:
-        tns_api_key (str): API key for the TNS.
-        tns_marker (str): Marker for the TNS.
-        tns_id (int): ID for the TNS.
+    Tokenized Attributes:
+        tns_api_key (SecretStr): API key for the TNS. Required.
+        tns_report_id (SecretInt): Report ID for the TNS submission. Required.
+        tns_bot_name (SecretStr): Name of the TNS bot. Required.
     """
-
-    tns_api_key: str = Field(
-        ..., description="API key for the TNS", example="1234567890"
+    model_config = SettingsConfigDict(
+        title="TNS Report",
+        validate_assignment=True,
+        validate_return=True,
+        revalidate_instances="always",
+        env_prefix="TNS_",
+        # This parameter ignores any extra fields that are not defined in the model
+        extra="ignore",
     )
-    tns_marker: str = Field(..., description="Marker for the TNS", example="FRB")
-    tns_id: int = Field(..., description="ID for the TNS", example="1234567890")
-
+    tns_api_key: SecretStr = Field(
+        ..., 
+        description="API key for the TNS. Required.",
+    )
+    tns_report_id: SecretInt = Field(
+        ..., 
+        description="Report ID for the TNS submission. Required."
+        )
+    tns_bot_name: SecretStr = Field(
+        ..., 
+        description="Name of the TNS bot. Required."
+        )
     @property
-    def submit(voevent: Dict[str, Any]):
+    def submit(tns_report: Dict[str, Any]):
         """Submits a VOEvent to the TNS API.
 
         Args:
-            voevent (Dict[str, Any]): The VOEvent data to be submitted.
-            api_key: The API key for authentication.
-            tns_id: The TNS ID.
-            bot_name: The name of the bot submitting the VOEvent.
-            tns_marker: The TNS marker.
-            url: The URL of the TNS API.
+            tns_report (Dict[str, Any]): The TNS report data to be submitted.
 
         Returns:
             The response from the TNS API.
@@ -48,7 +56,7 @@ class TNS(VOEvent):
         """
         # headers = {"User-Agent": tns_marker}
         # json_data = {"api_key": api_key, "data": voevent}
-        log.info("Sending VOE payload to TNS.")
+        # log.info("Sending VOE payload to TNS.")
         # response = requests.post(url, headers=headers, data=json_data)
         # response.raise_for_status()
         # return response

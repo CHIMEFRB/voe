@@ -1,28 +1,27 @@
 """format a VOE for a TNS submission."""
 
-from typing import Any, Dict
-
 import picologging as logging
-from pydantic import Field
-from utilities.comet import report, retract, update
+from typing import Any, Dict
+from pydantic import Field, SecretInt
 
 from frbvoe.models.voe import VOEvent
+from utilities.comet import report, retract, update
 
 logging.basicConfig()
 log = logging.getLogger()
 
-
 class Comet(VOEvent):
     """Represents a comet object that extends the VOEvent class.
 
-    Attributes:
-        url (str): The URL of the comet.
+    Tokenized Attributes:
+        comet_port (SecretInt) : Port of the comet broker. Optional
     """
-
-    url: str = Field(..., description="Comet URL", example="comet.com")
-
+    comet_port : SecretInt = Field(
+        default=None, 
+        description= "Port of the comet broker. Optional."
+    )
     @property
-    def report(voevent: Dict[str, Any]):
+    def report(comet_report: Dict[str, Any]):
         """Sends a report using the given VOEvent and comet URL.
 
         Args:
@@ -30,16 +29,16 @@ class Comet(VOEvent):
             comet_url (str): The URL of the comet to send the report to.
         """
         log.info("Sending VOE payload to Comet as a report.")
-        report(voevent)
+        report(comet_report)
 
     @property
-    def retract(voevent: Dict[str, Any]):
+    def retract(comet_report: Dict[str, Any]):
         """Retract the FRB from the Comet server."""
         log.info("Sending VOE payload to Comet as a retraction.")
-        retract(voevent)
+        retract(comet_report)
 
     @property
-    def update(voevent: Dict[str, Any]):
+    def update(comet_report: Dict[str, Any]):
         """Update the FRB on the Comet server."""
         log.info("Sending VOE payload to Comet as an update.")
-        update(voevent)
+        update(comet_report)

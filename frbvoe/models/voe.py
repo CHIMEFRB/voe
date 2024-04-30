@@ -4,12 +4,11 @@ from datetime import datetime
 from typing import Literal, Optional
 
 import picologging as logging
-from pydantic import EmailStr, Field, StrictFloat, StrictInt, StrictStr
+from pydantic import EmailStr, Field, StrictFloat, StrictInt, StrictStr, SecretInt, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 logging.basicConfig()
 log = logging.getLogger()
-
 
 class VOEvent(BaseSettings):
     """VOEvent Object.
@@ -24,10 +23,12 @@ class VOEvent(BaseSettings):
           - Environment variables with `FRB_VOE_` prefix.
           - The default values in the class constructor.
 
+    Tokenized Attributes:
+        TODO: DB interaction tokens? (Q4 Shiny)
+    
     Attributes:
         kind (str): Which kind of VOEvent. Required.
             - One of: detection, subsequent, retraction, or update
-        *token (SecretStr): Github Personal Access Token. Optional*
         author (str): Name of the VOEvent author. Required.
         date (datetime): Detection time of the FRB. Required.
         email (EmailStr): Email address of the VOEvent author. Required.
@@ -61,14 +62,13 @@ class VOEvent(BaseSettings):
     Returns:
         VOEvent: VOEvent object.
     """
-
     model_config = SettingsConfigDict(
         title="FRB VOEvent",
         validate_assignment=True,
         validate_return=True,
         revalidate_instances="always",
         env_prefix="FRB_VOE_",
-        # This parameters ignores any extra fields that are not defined in the model
+        # This parameter ignores any extra fields that are not defined in the model
         extra="ignore",
     )
     kind: Literal[

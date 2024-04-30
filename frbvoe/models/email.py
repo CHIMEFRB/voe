@@ -1,23 +1,31 @@
 """format a VOE for a TNS submission."""
 
+import picologging as logging
+from pydantic import Field, SecretStr
 from typing import Any, Dict
 
-import picologging as logging
-from pydantic import Field
-from utilities.email import report, retract, update
-
 from frbvoe.models.voe import VOEvent
+from utilities.email import report, retract, update
 
 logging.basicConfig()
 log = logging.getLogger()
 
 
 class Email(VOEvent):
-    """Represents an email object for sending VOEvents."""
-
-    username: str = Field(..., description="API key for the TNS", example="1234567890")
-    password: str = Field(..., description="Marker for the TNS", example="FRB")
-
+    """Represents an email object for sending VOEvents.
+    
+    Tokenized Attributes:
+        email_username (SecretStr) : VOEvent author email account username. Optional.
+        email_password (SecretStr) : VOEvent author email account password. Optional.
+    """
+    email_username : SecretStr = Field(
+        default=None,
+        description= "VOEvent author email account username. Optional."
+    )
+    email_password : SecretStr = Field(
+        default=None, 
+        description= "VOEvent author email account password. Optional."
+    )
     @property
     def report(voevent: Dict[str, Any]):
         """Sends the VOEvent email.
