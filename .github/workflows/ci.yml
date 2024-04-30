@@ -35,6 +35,7 @@ jobs:
         poetry run pre-commit run --all-files
   tests:
     runs-on: ubuntu-latest
+    needs: pre-commit-checks
     strategy:
       matrix:
         os: [ubuntu-latest]
