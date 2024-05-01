@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/CHIMEFRB/voe/compare/v0.1.0...v0.2.0) (2024-05-01)
+
+
+### Features
+
+* **docker:** added dockerfile and a docker compose config ([dda30fb](https://github.com/CHIMEFRB/voe/commit/dda30fb13b31978906f9f258d41d392f0a60bb67))
+
 ## 0.1.0 (2024-04-30)
 
 
