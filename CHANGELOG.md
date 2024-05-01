@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/CHIMEFRB/voe/compare/v0.2.0...v0.3.0) (2024-05-01)
+
+
+### Features
+
+* **docker:** fixes to Dockerfile ([b4cd247](https://github.com/CHIMEFRB/voe/commit/b4cd247e5a8d259cdcbe3a3e3e52cf7ba620b435))
+
 ## [0.2.0](https://github.com/CHIMEFRB/voe/compare/v0.1.0...v0.2.0) (2024-05-01)
 
 
