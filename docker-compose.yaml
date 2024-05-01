@@ -1,0 +1,19 @@
+version: "3.7"
+
+services:
+  voe:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["/bin/bash"]
+    deploy:
+      replicas: 1
+      resources:
+        reservations:
+          cpus: "0.1"
+          memory: "128M"
+        limits:
+          cpus: "0.5"
+          memory: "256M"
+      restart_policy:
+        condition: on-failure
