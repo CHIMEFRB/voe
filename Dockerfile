@@ -7,4 +7,4 @@ SHELL ["/bin/bash", "-c"]
 
 RUN pip install .
 
-CMD ["bash"]
+CMD ["/bin/bash"]
