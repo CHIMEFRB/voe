@@ -37,15 +37,12 @@ class TNS(VOEvent):
         description="API key for the TNS. Required.",
     )
     tns_report_id: int = Field(
-        ..., 
-        description="Report ID for the TNS submission. Required."
+        ..., description="Report ID for the TNS submission. Required."
     )
-    tns_bot_name: SecretStr = Field(
-        ..., 
-        description="Name of the TNS bot. Required."
-    )
+    tns_bot_name: SecretStr = Field(..., description="Name of the TNS bot. Required.")
+
     @property
-    def submit(tns_report: Dict[str, Any]): #TODO
+    def submit(tns_report: Dict[str, Any]):  # TODO
         """Submits a VOEvent to the TNS API.
 
         Args:

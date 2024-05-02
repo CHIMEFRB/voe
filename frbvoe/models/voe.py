@@ -56,7 +56,7 @@ class VOEvent(BaseSettings):
         VOEvent: VOEvent object.
     """
 
-    model_config = SettingsConfigDict( #TODO: Shiny, do I need this since there are no tokens used?
+    model_config = SettingsConfigDict(  # TODO: Shiny is this needed?
         title="FRB VOEvent",
         validate_assignment=True,
         validate_return=True,
@@ -115,7 +115,7 @@ class VOEvent(BaseSettings):
         gt=0.0,
         description="Central frequency of the observatory in MHz. Optional.",
         example=600,
-    )     
+    )
     npol: StrictInt = Field(
         default=None,
         gt=0,
@@ -127,7 +127,7 @@ class VOEvent(BaseSettings):
         gt=0,
         description="Bits per sample of the observatory. Optional.",
         example=8,
-    )   
+    )
     gain: float = Field(
         default=None,
         description="Gain of the observatory in dB. Optional.",
@@ -203,7 +203,8 @@ class VOEvent(BaseSettings):
         description="Transient Name Server name of the FRB. Optional.",
         example="FRB20210826A",
     )
-    @property
+
+    @property  # this just makes "payload" an attribute of the class
     def payload(self):
         """Return the VOEvent payload."""
         log.info("Returning VOEvent payload")

@@ -6,7 +6,7 @@ import picologging as logging
 from pydantic import Field
 
 from frbvoe.models.voe import VOEvent
-from frbvoe.utilities.comet import report, retract, update
+from frbvoe.utilities.comet import send
 
 logging.basicConfig()
 log = logging.getLogger()
@@ -24,7 +24,7 @@ class Comet(VOEvent):
     )
 
     @property
-    def report(comet_report: Dict[str, Any]):
+    def send_xml(comet_report: Dict[str, Any]):
         """Sends a report using the given VOEvent and comet URL.
 
         Args:
@@ -32,16 +32,4 @@ class Comet(VOEvent):
             comet_url (str): The URL of the comet to send the report to.
         """
         log.info("Sending VOE payload to Comet as a report.")
-        report(comet_report)
-
-    @property
-    def retract(comet_report: Dict[str, Any]):
-        """Retract the FRB from the Comet server."""
-        log.info("Sending VOE payload to Comet as a retraction.")
-        retract(comet_report)
-
-    @property
-    def update(comet_report: Dict[str, Any]):
-        """Update the FRB on the Comet server."""
-        log.info("Sending VOE payload to Comet as an update.")
-        update(comet_report)
+        send(comet_report)
