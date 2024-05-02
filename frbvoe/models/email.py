@@ -3,7 +3,7 @@
 from typing import Any, Dict
 
 import picologging as logging
-from pydantic import Field, SecretStr, StrictStr
+from pydantic import Field, SecretStr
 
 from frbvoe.models.voe import VOEvent
 from frbvoe.utilities.email import send
@@ -21,10 +21,6 @@ class Email(VOEvent):
 
     email_password: SecretStr = Field(
         default=None, description="VOEvent author email account password. Optional."
-    )
-    update_message: StrictStr = Field(
-        default=None,
-        description="Custom email message to send in an update VOEvent. Optional.",
     )
 
     @property

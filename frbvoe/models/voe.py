@@ -203,6 +203,10 @@ class VOEvent(BaseSettings):
         description="Transient Name Server name of the FRB. Optional.",
         example="FRB20210826A",
     )
+    update_message: StrictStr = Field(
+        default=None,
+        description="Custom email message to send in an update VOEvent. Optional.",
+    )
 
     @property  # this just makes "payload" an attribute of the class
     def payload(self):
