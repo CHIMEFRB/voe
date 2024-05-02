@@ -1,12 +1,11 @@
 """format a VOE for a TNS submission."""
 
-from typing import Any, Dict
-
 import picologging as logging
-from pydantic import Field, SecretStr
+from typing import Any, Dict
+from pydantic import Field, SecretStr, StrictStr
 
 from frbvoe.models.voe import VOEvent
-from frbvoe.utilities.email import report, retract, update
+from frbvoe.utilities.email import send
 
 logging.basicConfig()
 log = logging.getLogger()
@@ -16,44 +15,25 @@ class Email(VOEvent):
     """Represents an email object for sending VOEvents.
 
     Tokenized Attributes:
-        email_username (SecretStr) : VOEvent author email account username. Optional.
         email_password (SecretStr) : VOEvent author email account password. Optional.
     """
-
-    email_username: SecretStr = Field(
-        default=None, description="VOEvent author email account username. Optional."
-    )
     email_password: SecretStr = Field(
-        default=None, description="VOEvent author email account password. Optional."
+        default=None, 
+        description="VOEvent author email account password. Optional."
     )
-
+    update_message: StrictStr = Field(
+        default=None,
+        description="Custom email message to send in an update VOEvent. Optional."
+    )
     @property
-    def report(voevent: Dict[str, Any]):
+    def send_to_subscribers(email_report: Dict[str, Any]):
         """Sends the VOEvent email.
 
         Args:
             voevent (Dict[str, Any]): The VOEvent data.
 
         Returns:
-            None
+            status (str): The status of the email.
         """
-        # subject = "Subject"
-        # email_message = "This is the email"
-        log.info("Sending VOE payload to Email as a report.")
-        report(voevent)
-
-    @property
-    def retract(voevent: Dict[str, Any]):
-        """Retract the FRB from the Comet server."""
-        # subject = "Subject"
-        # email_message = "This is the email"
-        log.info("Sending VOE payload to Email as a retraction.")
-        retract(voevent)
-
-    @property
-    def update(voevent: Dict[str, Any]):
-        """Update the FRB on the Comet server."""
-        # subject = "Subject"
-        # email_message = "This is the email"
-        log.info("Sending VOE payload to Email as an update.")
-        update(voevent)
+        log.info("Emailing VOE payload to subscribers.")
+        send(email_report)

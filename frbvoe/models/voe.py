@@ -17,20 +17,10 @@ class VOEvent(BaseSettings):
     Args:
         BaseSettings (BaseSettings): Pydantic BaseSettings.
 
-    Note:
-        The selection priority for attributes in descending order is:
-
-          - Arguments passed to the `VOEvent` Object.
-          - Environment variables with `FRB_VOE_` prefix.
-          - The default values in the class constructor.
-
-    Tokenized Attributes:
-        TODO: DB interaction tokens? (Q4 Shiny)
-
     Attributes:
         kind (str): Which kind of VOEvent. Required.
             - One of: detection, subsequent, retraction, or update
-        author (str): Name of the VOEvent author. Required.
+        observatory_name (str): Name of the host observatory. Required.
         date (datetime): Detection time of the FRB. Required.
         email (EmailStr): Email address of the VOEvent author. Required.
         semi_major (float): Semi-major axis of the error ellipse of the
@@ -41,8 +31,10 @@ class VOEvent(BaseSettings):
         bandwidth (float): Bandwidth of the observation. Optional.
         central_frequency (float): Central frequency of the observation. Optional.
         npol (int): Number of polarizations of the observation. Optional.
+        bits_per_sample (int) : Bits per sample of the observation. Optional.
         gain (float): Gain of the observation. Optional.
         tsys (float): System temperature of the observation. Optional.
+        internal_id (str): Internal ID of the FRB. Optional.
         dm (float): Dispersion measure of the observation. Optional.
         dm_error (float): Error in the dispersion measure. Optional.
         width (float): Width of the pulse. Optional.
@@ -52,7 +44,7 @@ class VOEvent(BaseSettings):
         time (datetime): Time of the observation. Required.
         right_ascension (float): Right ascension of the observation. Required.
         declination (float): Declination of the observation. Required.
-        localization_error (float): Localization error of the observation. Optional.
+        pos_error_deg_95 (float): 95% localization error of the observation. Optional.
         importance (float): Importance of the observation between 0 and 1. Optional.
         website (str): Website of the host observatory. Optional.
         tns_name (str): TNS name of the event. Optional.
@@ -64,12 +56,11 @@ class VOEvent(BaseSettings):
         VOEvent: VOEvent object.
     """
 
-    model_config = SettingsConfigDict(
+    model_config = SettingsConfigDict( #TODO: Shiny, do I need this since there are no tokens used?
         title="FRB VOEvent",
         validate_assignment=True,
         validate_return=True,
         revalidate_instances="always",
-        env_prefix="FRB_VOE_",
         # This parameter ignores any extra fields that are not defined in the model
         extra="ignore",
     )
@@ -79,8 +70,8 @@ class VOEvent(BaseSettings):
         "retraction",
         "update",
     ] = Field(..., description="Which kind of VOEvent. Required.", example="detection")
-    author: StrictStr = Field(
-        ..., description="Name of the VOEvent author. Required.", example="John Smith"
+    observatory_name: StrictStr = Field(
+        ..., description="Name of the host observatory. Required.", example="CHIME"
     )
     date: datetime = Field(
         ...,
@@ -124,13 +115,19 @@ class VOEvent(BaseSettings):
         gt=0.0,
         description="Central frequency of the observatory in MHz. Optional.",
         example=600,
-    )
+    )     
     npol: StrictInt = Field(
         default=None,
         gt=0,
         description="Number of polarizations of the observation. Optional.",
         example=2,
     )
+    bits_per_sample: int = Field(
+        default=None,
+        gt=0,
+        description="Bits per sample of the observatory. Optional.",
+        example=8,
+    )   
     gain: float = Field(
         default=None,
         description="Gain of the observatory in dB. Optional.",
@@ -141,6 +138,10 @@ class VOEvent(BaseSettings):
         gt=0.0,
         description="System temperature of the observatory in K. Optional.",
         example=25.0,
+    )
+    internal_id: StrictStr = Field(
+        default=None,
+        description="Internal ID of the FRB. Optional.",
     )
     dm: float = Field(
         default=None,
@@ -180,10 +181,10 @@ class VOEvent(BaseSettings):
         description="Declination of the FRB in degrees (-90 ≤ Dec ≤ 90). Required.",
         example=14.2049,
     )
-    localization_error: Optional[StrictFloat] = Field(
+    pos_error_deg_95: Optional[StrictFloat] = Field(
         default=None,
         gt=0.0,
-        description="Error of the localization region in degrees. Required.",
+        description="95% localization error of the observation. Required.",
         example=0.001,
     )
     importance: float = Field(
@@ -202,16 +203,8 @@ class VOEvent(BaseSettings):
         description="Transient Name Server name of the FRB. Optional.",
         example="FRB20210826A",
     )
-
     @property
     def payload(self):
         """Return the VOEvent payload."""
         log.info("Returning VOEvent payload")
         return self.dict()
-
-
-# TODO: Functionality
-# from frbvoe.models.voe import VOEvent
-
-# voe = VOEvent(...)
-# tns = TNS(**voe.payload)
