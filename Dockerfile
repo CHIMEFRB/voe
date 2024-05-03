@@ -5,6 +5,6 @@ WORKDIR /voe
 
 SHELL ["/bin/bash", "-c"]
 
-RUN pip install .
+RUN pip install --no-cache-dir .
 
 CMD ["/bin/bash"]

@@ -6,6 +6,7 @@ from typing import Literal, Optional
 import picologging as logging
 from pydantic import EmailStr, Field, StrictFloat, StrictInt, StrictStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from sanic import Request
 
 logging.basicConfig()
 log = logging.getLogger()
@@ -213,3 +214,21 @@ class VOEvent(BaseSettings):
         """Return the VOEvent payload."""
         log.info("Returning VOEvent payload")
         return self.dict()
+
+    @staticmethod
+    async def compile(request: Request):
+        """Extracts data from request and returns object.
+
+        Parameters
+        ----------
+        request : Request
+            Sanic Request.
+
+        Returns
+        -------
+        ActionData
+            Object containing dependency data to take actions.
+        """
+        await request.receive_body()
+        voe = request.json
+        return VOEvent(**voe)

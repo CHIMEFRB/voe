@@ -11,6 +11,9 @@ pydantic-settings = "^2.2.1"
 requests = "^2.31.0"
 pydantic = {version = "^2.7.1", extras = ["email"]}
 picologging = "^0.9.3"
+comet = "^3.1.0"
+sanic = {extras = ["ext"], version = "^23.12"}
+motor = "^3.4.0"
 
 
 [tool.poetry.group.dev.dependencies]

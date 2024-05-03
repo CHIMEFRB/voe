@@ -1,13 +1,25 @@
-version: "3.7"
+version: "3.9"
 
 services:
   voe:
     build:
       context: .
+      no_cache: true
       dockerfile: Dockerfile
-    command: ["/bin/bash"]
+    command: ["python", "/voe/frbvoe/server.py"]
+    environment:
+      - SANIC_HOSTNAME=localhost
+      - SANIC_PORT=8001
+      - SANIC_ACCESS_LOG=true
+      - SANIC_AUTO_RELOAD=true
+      - SANIC_DEBUG=true
+      - SANIC_WORKERS=2
+      - SANIC_MONGODB_HOSTNAME=localhost
+      - SANIC_MONGODB_PORT=27017
+    network_mode: host
+    ports:
+      - "8001:8001"
     deploy:
-      replicas: 1
       resources:
         reservations:
           cpus: "0.1"
@@ -17,3 +29,56 @@ services:
           memory: "256M"
       restart_policy:
         condition: on-failure
+
+  comet:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: [
+      "twistd",
+      "--nodaemon",
+      "--pidfile=comet.pid",
+      "comet",
+      "--receive",
+      "--broadcast",
+      "--receive-port=8098",
+      "--broadcast-port=8099",
+      "--print-event",
+      "--local-ivo=ivo://frbvoe/test",
+      "--author-whitelist=0.0.0.0/0",
+    ]
+    environment:
+      - SUBSCRIBERS_LIST:${SUBSCRIBERS_LIST}
+    network_mode: host
+    ports:
+      - "8098:8098"
+      - "8099:8099"
+    deploy:
+      resources:
+        reservations:
+          cpus: "0.1"
+          memory: "128M"
+        limits:
+          cpus: "0.5"
+          memory: "256M"
+      restart_policy:
+        condition: on-failure
+
+  mongo:
+    image: mongo:latest
+    command: mongod --bind_ip_all --dbpath /data/db
+    network_mode: host
+    deploy:
+      resources:
+        reservations:
+          cpus: "0.1"
+          memory: "128M"
+        limits:
+          cpus: "0.5"
+          memory: "256M"
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./frbvoe-data:/data/db
