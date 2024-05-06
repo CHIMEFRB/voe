@@ -1,4 +1,8 @@
 [![Coverage Status](https://coveralls.io/repos/github/CHIMEFRB/voe/badge.svg?branch=main)](https://coveralls.io/github/CHIMEFRB/voe?branch=main)
+
+|   **`Status`**   | **`Coverage`**  |   **`Docs`**    |  **`Site Release`**  |   **`Style`**    |
+|-----------------|-----------------|-----------------|-----------------| -----------------|
+[![Continous Integration](https://github.com/CHIMEFRB/voe/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/CHIMEFRB/voe/actions/workflows/ci.yml) | [![Coverage Status](https://coveralls.io/repos/github/CHIMEFRB/voe/badge.svg?t=kpQqvT)](https://coveralls.io/github/CHIMEFRB/voe) | `TBA` | `2024.05.xx` | [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://black.readthedocs.io/en/stable/) |
 ---
 # Overview : A Telescope-Agnostic FRB Virtual Observatory Event (VOEvent) Service
 
