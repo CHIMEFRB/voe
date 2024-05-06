@@ -11,7 +11,7 @@ logging.basicConfig()
 log = logging.getLogger()
 
 
-def send(email_report: Dict[str, Any]):
+def send_email(email_report: Dict[str, Any]):
     """Sends an email with the provided email_report.
 
     Args:

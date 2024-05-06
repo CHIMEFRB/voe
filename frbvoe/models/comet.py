@@ -3,10 +3,10 @@
 from typing import Any, Dict
 
 import picologging as logging
+import requests
 from pydantic import Field
 
 from frbvoe.models.voe import VOEvent
-from frbvoe.utilities.comet import send
 
 logging.basicConfig()
 log = logging.getLogger()
@@ -24,7 +24,7 @@ class Comet(VOEvent):
     )
 
     @property
-    def send_xml(comet_report: Dict[str, Any]):
+    def send(comet_report: Dict[str, Any]):
         """Sends a report using the given VOEvent and comet URL.
 
         Args:
@@ -32,4 +32,8 @@ class Comet(VOEvent):
             comet_url (str): The URL of the comet to send the report to.
         """
         log.info("Sending VOE payload to Comet as a report.")
-        send(comet_report)
+        # vp.dump(voevent=comet_report, xml_declaration=False, file="temp_voe.txt")
+        response = requests.post(
+            "http://comet:8098/", json=comet_report
+        )  # TODO: check comet endpoint
+        return response.status_code == 200

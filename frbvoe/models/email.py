@@ -6,7 +6,7 @@ import picologging as logging
 from pydantic import Field, SecretStr
 
 from frbvoe.models.voe import VOEvent
-from frbvoe.utilities.email import send
+from frbvoe.utilities.email import send_email
 
 logging.basicConfig()
 log = logging.getLogger()
@@ -24,7 +24,7 @@ class Email(VOEvent):
     )
 
     @property
-    def send_email(email_report: Dict[str, Any]):
+    def send(email_report: Dict[str, Any]):
         """Sends the VOEvent email.
 
         Args:
@@ -34,4 +34,4 @@ class Email(VOEvent):
             status (str): The status of the email.
         """
         log.info("Emailing VOE payload to subscribers.")
-        send(email_report)
+        send_email(email_report)

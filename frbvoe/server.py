@@ -9,8 +9,8 @@ from sanic import Sanic
 from sanic.log import logger
 from sanic.worker.loader import AppLoader
 
-from frbvoe.models.voe import VOEvent
 from frbvoe.backend.voe import voe as voe_blueprint
+from frbvoe.models.voe import VOEvent
 
 
 async def mongo(app: Sanic, loop: AbstractEventLoop) -> None:
@@ -72,7 +72,7 @@ def create(name: str = "frbvoe", debug: bool = False) -> Sanic:
     app.config.HEALTH_ENDPOINT = True
     app.ctx.debug = debug
     app.config.FALL
-    BACK_ERROR_FORMAT = "json"
+    # BACK_ERROR_FORMAT = "json"
     # ? Blueprints
     app.blueprint(voe_blueprint)
     # ? Listeners
