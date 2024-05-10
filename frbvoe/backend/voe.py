@@ -7,18 +7,21 @@ from sanic.request import Request
 from sanic.response import json as json_response
 from sanic_ext import openapi
 
+import picologging as logging
+logging.basicConfig()
+log = logging.getLogger()
+
 from frbvoe.models.comet import Comet
 from frbvoe.models.email import Email
 from frbvoe.models.voe import VOEvent
 
 voe = Blueprint("voe", url_prefix="/")
 
-
 # Post at /create_voe
 @voe.post("create_voe")
 @openapi.response(201, description="Validates VOEvent data from a host observatory.")
 # Add the validated payload to the MongoDB Database
-async def create_voe(request: Request, voe_event: VOEvent):
+async def create_voe(request: Request): #TODO: Shiny, should I add voe_event: VOEvent?
     """Process a VOEvent.
 
     Args:
@@ -34,12 +37,18 @@ async def create_voe(request: Request, voe_event: VOEvent):
         PyMongoError: If there is an error with the PyMongo library.
 
     """
+    log.info("Processing VOEvent")
+    voe = VOEvent(**request.json)
+    print(voe.json())
+    
+    
+
     # Send VOEvent to Comet
-    comet_report = Comet(voe_event.model_dump())
-    comet_report.send
+    # comet_report = Comet(**request.json)
+    # comet_report.send
 
     # Send VOEvent to Email
-    email_report = Email(voe_event.model_dump())
+    email_report = Email(**request.json)
     email_report.send
 
     # Add VOEvent to MongoDB
@@ -48,7 +57,7 @@ async def create_voe(request: Request, voe_event: VOEvent):
     # Document -> VOEvent Payload Dict.
     mongo = request.app.ctx.mongo
     try:
-        insert_result = await mongo["frbvoe"]["voe"].insert_one(voe_event.model_dump())
+        insert_result = await mongo["frbvoe"]["voe"].insert_one(voe.model_dump())
     except (Exception, PyMongoError) as mongo_error:
         logger.error(f"{mongo_error} on /voe")
         return json_response({"message": mongo_error}, status=500)

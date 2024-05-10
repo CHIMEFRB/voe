@@ -19,9 +19,10 @@ class Email(VOEvent):
         email_password (SecretStr) : VOEvent author email account password. Optional.
     """
 
-    email_password: SecretStr = Field(
-        default=None, description="VOEvent author email account password. Optional."
-    )
+    # email_password: SecretStr = Field(
+    #     default=None,
+    #     description="VOEvent author email account password. Optional."
+    # )
 
     @property
     def send(email_report: Dict[str, Any]):

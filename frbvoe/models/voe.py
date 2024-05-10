@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import Literal, Optional
 
 import picologging as logging
-from pydantic import EmailStr, Field, StrictFloat, StrictInt, StrictStr
+from pydantic import EmailStr, Field, StrictFloat, StrictInt, StrictStr, BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sanic import Request
 
@@ -12,7 +12,7 @@ logging.basicConfig()
 log = logging.getLogger()
 
 
-class VOEvent(BaseSettings):
+class VOEvent(BaseModel): #BaseSettings
     """VOEvent Object.
 
     Args:
@@ -57,26 +57,38 @@ class VOEvent(BaseSettings):
         VOEvent: VOEvent object.
     """
 
-    model_config = SettingsConfigDict(  # TODO: Shiny is this needed?
-        title="FRB VOEvent",
-        validate_assignment=True,
-        validate_return=True,
-        revalidate_instances="always",
-        # This parameter ignores any extra fields that are not defined in the model
-        extra="ignore",
-    )
+    # model_config = SettingsConfigDict(  # TODO: Shiny is this needed?
+    #     title="FRB VOEvent",
+    #     validate_assignment=True,
+    #     validate_return=True,
+    #     revalidate_instances="always",
+    #     # This parameter ignores any extra fields that are not defined in the model
+    #     extra="ignore",
+    # )
     kind: Literal[
         "detection",
         "subsequent",
         "retraction",
         "update",
-    ] = Field(..., description="Which kind of VOEvent. Required.", example="detection")
-    observatory_name: StrictStr = Field(
-        ..., description="Name of the host observatory. Required.", example="CHIME"
-    )
-    date: datetime = Field(
+    ] = Field(
         ...,
-        gt=datetime(2024, 1, 1),  # release date of frb-voe
+        description="Which kind of VOEvent. Required.",
+        example="detection"
+        )
+    observatory_name: StrictStr = Field(
+        ...,
+        description="Name of the host observatory. Required.",
+        example="CHIME"
+    )
+    # date: datetime = Field(
+    #     ...,
+    #     gt=datetime(2024, 1, 1),  # release date of frb-voe
+    #     description="Detection time of the FRB. Required.",
+    #     example="2020-01-13 16:55:08.844845",
+    # )
+    date : StrictStr = Field(
+        ...,
+        # release date of frb-voe
         description="Detection time of the FRB. Required.",
         example="2020-01-13 16:55:08.844845",
     )
@@ -167,9 +179,12 @@ class VOEvent(BaseSettings):
         example=13.8,
     )
     flux: float = Field(
-        default=None, description="Flux of the FRB in Jy. Optional.", example=4.9
+        default=None,
+        description="Flux of the FRB in Jy. Optional.",
+        example=4.9
     )
     right_ascension: float = Field(
+        default=None,
         ge=0.0,
         le=360.0,
         description="""Right acension of the FRB in degrees
@@ -177,6 +192,7 @@ class VOEvent(BaseSettings):
         example=55.2938,
     )
     declination: float = Field(
+        default=None,
         ge=-90.0,
         le=90.0,
         description="Declination of the FRB in degrees (-90 ≤ Dec ≤ 90). Required.",
@@ -198,6 +214,7 @@ class VOEvent(BaseSettings):
     website: Optional[StrictStr] = Field(
         default=None,
         description="Link to the host observatory website. Optional.",
+        example="https://host_observatory.com/"
     )
     tns_name: Optional[StrictStr] = Field(
         default=None,
@@ -215,7 +232,7 @@ class VOEvent(BaseSettings):
         log.info("Returning VOEvent payload")
         return self.dict()
 
-    @staticmethod
+    @staticmethod #TODO: Shiny what's this for?
     async def compile(request: Request):
         """Extracts data from request and returns object.
 

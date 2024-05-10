@@ -25,6 +25,7 @@ def send_email(email_report: Dict[str, Any]):
     Raises:
         None
     """
+    email_report = email_report.model_dump()
     subject = f"{email_report['observatory_name']}_VOE_{email_report['kind']}"
     if email_report["kind"] in ["detection", "subsequent"]:
         email_message = f"""
@@ -48,36 +49,6 @@ def send_email(email_report: Dict[str, Any]):
             \n
             \t\ttsys: {email_report['tsys']} K\n
             \n
-            \t\tbackend: {email_report['backend']}\n
-            \n
-            \tevent parameters:\n
-            \t\tevent_no: {email_report['internal_id']}\n
-            \n
-            \t\tknown_source_name: {email_report['tns_name']}\n
-            \n
-            \t\tdm: {email_report['dm']} +/- {email_report['dm_error']} pc/cm^3\n
-            \n
-            \t\ttimestamp_utc: {email_report['date']}
-            +/- {email_report['sampling_time']}\n #TODO
-            \n
-            \t\tsnr: {email_report['snr']}\n
-            \n
-            \t\tpos_error_deg_95: {email_report['pos_error_deg_95']} degrees\n
-            \n\n
-            WHERE and WHEN\n
-            \tCoordinate system: {email_report['coordinate_system']}\n
-            \tTimestamp [UTC]: {email_report['date']}\n
-            \tLocalization: ({email_report['ra']}, {email_report['dec']})
-            +/- {email_report['pos_error_deg_95']} degrees (J2000)\n
-            \n\n
-            HOW\n
-            \tDescription: information regarding the host observatory can be found here:
-            {email_report['website']}\n
-            \n\n
-            WHY\n
-            \tImportance: {email_report['importance']}\n
-            \n\n
-
             **********
             This email was generated automatically by the
             {email_report['observatory_name']} frb-voe Service.
@@ -125,8 +96,8 @@ def send_email(email_report: Dict[str, Any]):
         email_message = email_report["update_message"]
 
     # Email configuration
-    receiver_email = "thomas.abbott@mail.mcgill.ca"  # TODO: load from DB
-    smtp_server = "smtp.example.com"  # TODO: Shiny what should this be?
+    receiver_email = "thomas.abbott@physics.mcgill.ca"  # TODO: load from DB
+    smtp_server = "smtp.example.com"  # Change to the appropriate server if needed
     smtp_port = 587  # Change to the appropriate port if needed
 
     # Create a message
@@ -135,17 +106,52 @@ def send_email(email_report: Dict[str, Any]):
     message["To"] = receiver_email
     message["Subject"] = subject
     message.attach(MIMEText(email_message, "plain"))
+    
+    #print email message
+    print(email_message)
 
-    # Connect to the SMTP server
-    server = smtplib.SMTP(smtp_server, smtp_port)
-    server.starttls()  # Secure the connection
-    server.login(email_report["email"], email_report["email_password"])
+    # # Connect to the SMTP server
+    # server = smtplib.SMTP(smtp_server, smtp_port)
+    # server.starttls()  # Secure the connection
+    # # server.login(email_report["email"], email_report["email_password"])
+    # server.login("username", "password")  # TODO: load from DB
+    # # Send the email
+    # server.send_message(message)
 
-    # Send the email
-    server.send_message(message)
-
-    # Quit the server
-    server.quit()
+    # # Quit the server
+    # server.quit()
     status = "Success"
 
     return status
+
+
+
+#             \t\tbackend: {email_report['backend']}\n
+#             \n
+#             \tevent parameters:\n
+#             \t\tevent_no: {email_report['internal_id']}\n
+#             \n
+#             \t\tknown_source_name: {email_report['tns_name']}\n
+#             \n
+#             \t\tdm: {email_report['dm']} +/- {email_report['dm_error']} pc/cm^3\n
+#             \n
+#             \t\ttimestamp_utc: {email_report['date']}
+#             +/- {email_report['sampling_time']}\n #TODO
+#             \n
+#             \t\tsnr: {email_report['snr']}\n
+#             \n
+#             \t\tpos_error_deg_95: {email_report['pos_error_deg_95']} degrees\n
+#             \n\n
+#             WHERE and WHEN\n
+#             \tCoordinate system: {email_report['coordinate_system']}\n
+#             \tTimestamp [UTC]: {email_report['date']}\n
+#             \tLocalization: ({email_report['ra']}, {email_report['dec']})
+#             +/- {email_report['pos_error_deg_95']} degrees (J2000)\n
+#             \n\n
+#             HOW\n
+#             \tDescription: information regarding the host observatory can be found here:
+#             {email_report['website']}\n
+#             \n\n
+#             WHY\n
+#             \tImportance: {email_report['importance']}\n
+#             \n\n
