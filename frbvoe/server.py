@@ -71,8 +71,7 @@ def create(name: str = "frbvoe", debug: bool = False) -> Sanic:
     app.config.HEALTH = True
     app.config.HEALTH_ENDPOINT = True
     app.ctx.debug = debug
-    app.config.FALL
-    # BACK_ERROR_FORMAT = "json"
+    app.config.FALLBACK_ERROR_FORMAT = "json"
     # ? Blueprints
     app.blueprint(voe_blueprint)
     # ? Listeners
@@ -84,7 +83,7 @@ if __name__ == "__main__":
     loader = AppLoader(factory=partial(create))
     server: Sanic = loader.load()
     server.prepare(
-        host=server.config.get("HOSTNAME", "localhost"),  # type: ignore
+        host=server.config.get("HOSTNAME", "0.0.0.0"),  # type: ignore
         port=server.config.get("PORT", 8002),  # type: ignore
         access_log=server.config.get("ACCESS_LOG", False),
         auto_reload=server.config.get("AUTO_RELOAD", True),
