@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import Literal, Optional
 
 import picologging as logging
-from pydantic import EmailStr, Field, StrictFloat, StrictInt, StrictStr, BaseModel
+from pydantic import BaseModel, EmailStr, Field, StrictFloat, StrictInt, StrictStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sanic import Request
 
@@ -12,7 +12,7 @@ logging.basicConfig()
 log = logging.getLogger()
 
 
-class VOEvent(BaseModel): #BaseSettings
+class VOEvent(BaseModel):  # BaseSettings
     """VOEvent Object.
 
     Args:
@@ -70,15 +70,9 @@ class VOEvent(BaseModel): #BaseSettings
         "subsequent",
         "retraction",
         "update",
-    ] = Field(
-        ...,
-        description="Which kind of VOEvent. Required.",
-        example="detection"
-        )
+    ] = Field(..., description="Which kind of VOEvent. Required.", example="detection")
     observatory_name: StrictStr = Field(
-        ...,
-        description="Name of the host observatory. Required.",
-        example="CHIME"
+        ..., description="Name of the host observatory. Required.", example="CHIME"
     )
     # date: datetime = Field(
     #     ...,
@@ -86,7 +80,7 @@ class VOEvent(BaseModel): #BaseSettings
     #     description="Detection time of the FRB. Required.",
     #     example="2020-01-13 16:55:08.844845",
     # )
-    date : StrictStr = Field(
+    date: StrictStr = Field(
         ...,
         # release date of frb-voe
         description="Detection time of the FRB. Required.",
@@ -179,9 +173,7 @@ class VOEvent(BaseModel): #BaseSettings
         example=13.8,
     )
     flux: float = Field(
-        default=None,
-        description="Flux of the FRB in Jy. Optional.",
-        example=4.9
+        default=None, description="Flux of the FRB in Jy. Optional.", example=4.9
     )
     right_ascension: float = Field(
         default=None,
@@ -214,7 +206,7 @@ class VOEvent(BaseModel): #BaseSettings
     website: Optional[StrictStr] = Field(
         default=None,
         description="Link to the host observatory website. Optional.",
-        example="https://host_observatory.com/"
+        example="https://host_observatory.com/",
     )
     tns_name: Optional[StrictStr] = Field(
         default=None,
@@ -232,7 +224,7 @@ class VOEvent(BaseModel): #BaseSettings
         log.info("Returning VOEvent payload")
         return self.dict()
 
-    @staticmethod #TODO: Shiny what's this for?
+    @staticmethod  # TODO: Shiny what's this for?
     async def compile(request: Request):
         """Extracts data from request and returns object.
 

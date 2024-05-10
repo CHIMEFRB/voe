@@ -106,8 +106,8 @@ def send_email(email_report: Dict[str, Any]):
     message["To"] = receiver_email
     message["Subject"] = subject
     message.attach(MIMEText(email_message, "plain"))
-    
-    #print email message
+
+    # print email message
     print(email_message)
 
     # # Connect to the SMTP server
@@ -123,7 +123,6 @@ def send_email(email_report: Dict[str, Any]):
     status = "Success"
 
     return status
-
 
 
 #             \t\tbackend: {email_report['backend']}\n

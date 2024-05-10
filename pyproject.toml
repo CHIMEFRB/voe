@@ -15,12 +15,16 @@ comet = "^3.1.0"
 sanic = {extras = ["ext"], version = "^23.12"}
 motor = "^3.4.0"
 numpy = "^1.26.4"
+click = "^8.1.7"
 
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.1.1"
 pre-commit = "^3.7.0"
 pytest-cov = "^5.0.0"
+
+[tool.poetry.scripts]
+frbvoe = "frbvoe.cli.main:cli"
 
 [build-system]
 requires = ["poetry-core"]
