@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.4.0](https://github.com/CHIMEFRB/voe/compare/v0.3.0...v0.4.0) (2024-05-27)
+
+
+### Features
+
+* **backend/voe.py:** adding create voe endpoint ([488c000](https://github.com/CHIMEFRB/voe/commit/488c00062a41e910c5b3001aa064a310c62fb297))
+* **cli:** added click cli support ([bc6f784](https://github.com/CHIMEFRB/voe/commit/bc6f784c19bd62ef266ca7426cf9f8adf95f2246))
+* **email:** Added functionality to send a voe email ([d55725b](https://github.com/CHIMEFRB/voe/commit/d55725b899e055e7f0b744fa418157a84a582025))
+* **frbvoe/models/subscriber.py:** Created functionality to add a subscriber to the DB ([8b63fe7](https://github.com/CHIMEFRB/voe/commit/8b63fe7f398da0677fa25f65c2819d1f00e7ad52))
+* **server:** started on server side logic ([620ce77](https://github.com/CHIMEFRB/voe/commit/620ce7720ee66f11c2c1fd79dba645e57270e16c))
+
+
+### Bug Fixes
+
+* **Fixed-linting:** Fixed linting for utilities/email.py ([1806807](https://github.com/CHIMEFRB/voe/commit/18068078808316b166c6f61415f0ef5a96ca0ea6))
+* **frbvoe/server.py:** Fixed Fallback error ([3bdeafe](https://github.com/CHIMEFRB/voe/commit/3bdeafeaf7fe17ce9d7c4d0af9163fbec38a6421))
+* **frbvoe:** WIP ([f085e07](https://github.com/CHIMEFRB/voe/commit/f085e07f671adaf1c554da36d9c4f049b2b4b649))
+* **linting:** Fixed pre-commit linting ([3777b5c](https://github.com/CHIMEFRB/voe/commit/3777b5cea260858f923b3697a6bceeca543ec144))
+* **tests:** added some tests ([8098802](https://github.com/CHIMEFRB/voe/commit/8098802b48737cc448275032c64c933987cd5e47))
+
 ## [0.3.0](https://github.com/CHIMEFRB/voe/compare/v0.2.0...v0.3.0) (2024-05-01)
 
 
