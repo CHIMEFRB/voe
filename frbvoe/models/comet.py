@@ -1,4 +1,4 @@
-"""format a VOE for a TNS submission."""
+"""Send  submission."""
 
 from typing import Any, Dict
 
@@ -19,8 +19,16 @@ class Comet(VOEvent):
         comet_port (SecretInt) : Port of the comet broker. Optional
     """
 
+    # model_config = SettingsConfigDict(  # TODO: Shiny is this needed?
+    #     title="FRB VOEvent",
+    #     validate_assignment=True,
+    #     validate_return=True,
+    #     revalidate_instances="always",
+    #     # This parameter ignores any extra fields that are not defined in the model
+    #     extra="ignore",
+    # )
     comet_port: int = Field(
-        default=None, description="Port of the comet broker. Optional."
+        default=8098, description="Port of the Comet broker. Default is 8098. Optional."
     )
 
     @property
