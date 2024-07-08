@@ -8,9 +8,6 @@ from sanic.request import Request
 from sanic.response import json as json_response
 from sanic_ext import openapi
 
-from frbvoe.models.comet import Comet
-from frbvoe.models.email import Email
-from frbvoe.models.subscriber import Subscriber
 from frbvoe.models.voe import VOEvent
 
 logging.basicConfig()
@@ -53,8 +50,7 @@ async def create_voe(request: Request):  # TODO: Shiny, should I add voe_event: 
     # Send VOEvent to Comet
     try:
         log.info("Sending the VOEvent to Comet")
-        comet_report = Comet(**request.json)
-        comet_report.send
+        voevent.send_comet
         comet_status = "Success"
     except Exception as comet_error:
         log.exception(f" While sending the VOEvent to Comet: {comet_error}")
@@ -63,8 +59,7 @@ async def create_voe(request: Request):  # TODO: Shiny, should I add voe_event: 
     # Send VOEvent to Email
     try:
         log.info("Sending the VOEvent to Email")
-        email_report = Email(**request.json)
-        email_report.send
+        voevent.send_email
         email_status = "Success"
     except Exception as email_error:
         log.exception(f" While sending the VOEvent to Email: {email_error}")
@@ -96,6 +91,7 @@ async def create_voe(request: Request):  # TODO: Shiny, should I add voe_event: 
             "comet": comet_status,
             "email": email_status,
             "database": database_status,
+            "id": insert_result.inserted_id,
         },
         status=status_code,
     )
@@ -129,51 +125,3 @@ async def delete_voe(request: Request):
         return json_response({"message": mongo_error}, status=500)
 
     return json_response({"message": delete_result.delete_count}, status=202)
-
-
-# Post at /subscriber
-@voe.post("subscriber")
-@openapi.response(
-    201, description="Adds or removes a subscriber from the VOEvent server."
-)
-# Add the subscriber payload to the MongoDB Database
-async def add_subscriber(request: Request):
-    # TODO: Shiny, should I add subscriber: Subscriber?
-    """Adds a subscriber document to the database.
-
-    Args:
-        request (Request): The HTTP request object.
-
-    Returns:
-        Response: The HTTP response object.
-    """
-    # Validate the Subscriber
-    try:
-        log.info("Validating the Subscriber")
-        subscriber = Subscriber(**request.json)
-        validation_status = "Success"
-        status_code = 200
-    except Exception as validation_error:
-        log.exception(f"Error while validating the Subscriber: {validation_error}")
-        validation_status = "Failure"
-        status_code = 400
-
-    # Save Subscriber to MongoDB
-    # DB Name: frbvoe, Collection: subscriber, Document: Subscriber Payload Dict
-    try:
-        mongo = request.app.ctx.mongo
-        log.info("Saving the Subscriber to MongoDB")
-        mongo = request.app.ctx.mongo
-        insert_result = await mongo["frbvoe"]["subscriber"].insert_one(
-            subscriber.model_dump()
-        )
-        database_status = "Success"
-    except (Exception, PyMongoError) as mongo_error:
-        log.exception(f" While saving the Subscriber to MongoDB: {mongo_error}")
-        database_status = "Failure"
-        status_code = 500
-
-    return json_response(
-        {"validation": validation_status, "database": database_status},
-        status=status_code,
-    )

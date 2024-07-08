@@ -1,12 +1,24 @@
 """Virtual Observatory Event (VOEvent) Model."""
 
-from datetime import datetime
-from typing import Literal, Optional
+# from datetime import datetime
+from typing import Any, Dict, Literal, Optional
 
 import picologging as logging
-from pydantic import BaseModel, EmailStr, Field, StrictFloat, StrictInt, StrictStr
-from pydantic_settings import BaseSettings, SettingsConfigDict
+import requests
+from pydantic import (
+    BaseModel,
+    EmailStr,
+    Field,
+    SecretStr,
+    StrictFloat,
+    StrictInt,
+    StrictStr,
+)
+
+# from pydantic_settings import BaseSettings, SettingsConfigDict
 from sanic import Request
+
+from frbvoe.utilities.email import send_email  # TODO: check this import
 
 logging.basicConfig()
 log = logging.getLogger()
@@ -14,13 +26,11 @@ log = logging.getLogger()
 
 class VOEvent(BaseModel):  # BaseSettings
     """VOEvent Object.
-
     Args:
         BaseSettings (BaseSettings): Pydantic BaseSettings.
 
     Attributes:
         kind (str): Which kind of VOEvent. Required.
-            - One of: detection, subsequent, retraction, or update
         observatory_name (str): Name of the host observatory. Required.
         date (datetime): Detection time of the FRB. Required.
         email (EmailStr): Email address of the VOEvent author. Required.
@@ -50,6 +60,10 @@ class VOEvent(BaseModel):  # BaseSettings
         website (str): Website of the host observatory. Optional.
         tns_name (str): TNS name of the event. Optional.
 
+    Tokenized Attributes:
+        comet_port (SecretInt) : Port of the comet broker. Optional
+        email_password (SecretStr) : VOEvent author email account password. Optional.
+
     Raises:
         ValueError: If the voevent is not valid.
 
@@ -65,6 +79,12 @@ class VOEvent(BaseModel):  # BaseSettings
     #     # This parameter ignores any extra fields that are not defined in the model
     #     extra="ignore",
     # )
+    comet_port: int = Field(
+        default=8098, description="Port of the Comet broker. Default is 8098. Optional."
+    )
+    email_password: SecretStr = Field(
+        default=None, description="VOEvent author email account password. Optional."
+    )
     kind: Literal[
         "detection",
         "subsequent",
@@ -223,6 +243,35 @@ class VOEvent(BaseModel):  # BaseSettings
         """Return the VOEvent payload."""
         log.info("Returning VOEvent payload")
         return self.dict()
+
+    @property
+    def send_comet(comet_report: Dict[str, Any]):
+        """Sends a report using the given VOEvent and comet URL.
+
+        Args:
+            voevent (Dict[str, Any]): The VOEvent to send.
+            comet_url (str): The URL of the comet to send the report to.
+            comet_port (SecretInt) : Port of the comet broker. Optional
+        """
+        log.info("Sending VOE payload to Comet as a report.")
+        # vp.dump(voevent=comet_report, xml_declaration=False, file="temp_voe.txt")
+        response = requests.post(
+            "http://comet:8098/", json=comet_report
+        )  # TODO: check comet endpoint
+        return response.status_code == 200
+
+    @property
+    def send_email(email_report: Dict[str, Any]):
+        """Sends the VOEvent email.
+
+        Args:
+            voevent (Dict[str, Any]): The VOEvent data.
+
+        Returns:
+            status (str): The status of the email.
+        """
+        log.info("Emailing VOE payload to subscribers.")
+        send_email(email_report)
 
     @staticmethod  # TODO: Shiny what's this for?
     async def compile(request: Request):

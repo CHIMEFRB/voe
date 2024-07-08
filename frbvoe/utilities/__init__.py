@@ -1,1 +1,1 @@
-"""Fast Radio Burst Virtual Observatory Event (FRB-VOE)."""
+"""FRB-VOE Utilities."""

@@ -3,15 +3,17 @@
 # import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from typing import Any, Dict
 
 import picologging as logging
+
+# from typing import Any, Dict
+
 
 logging.basicConfig()
 log = logging.getLogger()
 
 
-def send_email(email_report: Dict[str, Any]):
+def send_email(email_report):
     """Sends an email with the provided email_report.
 
     Args:
