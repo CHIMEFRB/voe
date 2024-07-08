@@ -464,7 +464,7 @@ class TNSAgent:
         return found_name
 
     def change_prop_period(self, payload: dict) -> bool:
-        """Change the end date for the proprietary period for 
+        """Change the end date for the proprietary period for
         a previously submitted FRB.
 
         Use cases include:
