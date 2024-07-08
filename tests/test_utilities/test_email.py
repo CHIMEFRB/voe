@@ -1,17 +1,20 @@
 import pytest
-from frbvoe.models.voe import VOE
-from frbvoe.utilities.comet import report, retract, update
+
+from frbvoe.models.voe import VOEvent
+
 
 def test_report(voe, test_parameter, test_value):
     with pytest.raises(ValueError):
         voe[test_parameter] = test_value
         print(voe)
-        
+
+
 def test_retract(voe, test_parameter, test_value):
     with pytest.raises(ValueError):
         voe[test_parameter] = test_value
         print(voe)
-        
+
+
 def test_update(voe, test_parameter, test_value):
     with pytest.raises(ValueError):
         voe[test_parameter] = test_value
@@ -19,7 +22,7 @@ def test_update(voe, test_parameter, test_value):
 
 
 # Example usage
-sample_voe = VOE(
+sample_voe = VOEvent(
     kind="detection",
     author="John Smith",
     email="john.smith@email.com",
