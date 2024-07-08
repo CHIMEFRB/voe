@@ -26,6 +26,7 @@ log = logging.getLogger()
 
 class VOEvent(BaseModel):  # BaseSettings
     """VOEvent Object.
+
     Args:
         BaseSettings (BaseSettings): Pydantic BaseSettings.
 
