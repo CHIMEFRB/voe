@@ -7,7 +7,6 @@
 
 `frb-voe` is a telescope-agnostic server for publishing, broadcasting, and recording Virtual Observatory Events (VOEvents) for detections of Fast Radio Bursts (FRBs). Telescopes and observatories that are actively detecting or following up FRBs in the radio regime can establish a subscription-based FRB VOEvent service using `frb-voe`. The core functionality of the code base is the following tasks:
 
-- Start and stop a [Comet](https://comet.transientskp.org/en/stable/) VOEvent broker.
 - Publish VOEvents that follow an extension to the FRB VOEvent Standard originally prescribed in [Petroff et al. 2017](https://arxiv.org/abs/1710.08155) and broadcast them using the Comet broker.
 - Maintain a database of subscribers that can receive the VOEvent broadcast from the Comet broker.
 - Submit FRBs to the [Transient Name Server](https://www.wis-tns.org) (TNS).
@@ -60,10 +59,6 @@ export TNS_API_TNS_ID=""    # ID number for your TNS bot
 export TNS_API_BOT_NAME=""  # Name of your TNS bot
 ```
 
-## MongoDB Setup
-
-Docker is a reliable way to set up a containerized MongoDB server. Follow directions to install [Docker Desktop](https://www.docker.com/products/docker-desktop/) on your machine. A MongoDB server is required to host the databases used by `frb-voe` and this can be set up to run in a docker container on a standard port.
-
 ## Interact with the TNS
 
 **Once the frb-voe backend is started**, a dedicated CLI can be used for all interactions with the [Transient Name Server](https://www.wis-tns.org/). The command signature is the following:
@@ -81,7 +76,7 @@ Be sure that:
 When you have the event number of a FRB Candidate that needs to be submitted to the TNS, use the following command to acquire the TNS name.
 
 ```
-poetry run frb-voe tns chimefrb-submit --help
+poetry run frb-voe tns submit --help
 ```
 
 The help dialogue will explain what options are required and what data is needed from the user. These include:
@@ -94,15 +89,12 @@ Optionally, one can practice the submission by setting the `--sandbox` flag in t
 # NOTES: 
 
 Layout:
-- observatory (L4) will send an HTML request contiaining all the information needed to create a VOEvent to voe.
+- observatory will send an HTML request contiaining all the information needed to create a VOEvent to voe.
 - voe will validate the dictionary using Pydantic, publish it to comet and save it to a MongoDB
 - voe will periodically check the MongoDB for new subscribers and for newly retracted FRBs
 - voe will also be able to submit FRBs from the MongoDB to the TNS through a CLI
 
-Desired Features:
-- easy installation through docker to compose the voe service, MongoDB, and comet service in one swoop
-
-Environment variables: To use the service, you must have the following environment variables defined in your bash profile. TNS Bots can be registered here: https://www.wis-tns.org/bots.
+Environment variables: To use the service, you must have the following environment variables defined in your bash profile.
 - FRB_VOE_TNS_API_KEY
 - FRB_VOE_TNS_BOT_NAME
 - FRB_VOE_TNS_BOT_ID
