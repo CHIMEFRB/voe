@@ -3,12 +3,12 @@
 [![Continous Integration](https://github.com/CHIMEFRB/voe/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/CHIMEFRB/voe/actions/workflows/ci.yml) | [![Coverage Status](https://coveralls.io/repos/github/CHIMEFRB/voe/badge.svg?branch=main)](https://coveralls.io/github/CHIMEFRB/voe?branch=main) | `TBA` | `2024.05.xx` | [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://black.readthedocs.io/en/stable/) |
 ---
 
-# Overview : A Telescope-Agnostic FRB Virtual Observatory Event (VOEvent) Service
+# Overview : An FRB Virtual Observatory Event Service
 
-`frb-voe` is a telescope-agnostic server for publishing, broadcasting, and recording Virtual Observatory Events (VOEvents) for detections of Fast Radio Bursts (FRBs). Telescopes and observatories that are actively detecting or following up FRBs in the radio regime can establish a subscription-based FRB VOEvent service using `frb-voe`. The core functionality of the code base is the following tasks:
+`frb-voe` is a telescope-agnostic server for publishing, broadcasting, and recording Virtual Observatory Events (VOEvents) for detections of Fast Radio Bursts (FRBs). Telescopes and observatories that are actively detecting or following up FRBs can establish a subscription-based FRB VOEvent service using `frb-voe`. The core functionality of the code base is the following tasks:
 
-- Publish VOEvents that follow an extension to the FRB VOEvent Standard originally prescribed in [Petroff et al. 2017](https://arxiv.org/abs/1710.08155) and broadcast them using the Comet broker and/or an SMTP email server.
-- Maintain and interact with a database of VOEvent metadata and subscribers information.
+- Publish VOEvents that follow an extension to the FRB VOEvent Standard originally prescribed in [Petroff et al. 2017](https://arxiv.org/abs/1710.08155) using a [Comet broker](https://www.sciencedirect.com/science/article/pii/S2213133714000407) and/or an SMTP email server.
+- Maintain and interact with a [Mongo Database](https://www.mongodb.com/) of VOEvent metadata and subscribers information.
 - Submit FRBs to the [Transient Name Server](https://www.wis-tns.org) (TNS).
 
 ![frb-voe-workflow](/frb-voe-workflow.png?raw=true "The frb-voe Workflow")
