@@ -7,9 +7,11 @@
 
 `frb-voe` is a telescope-agnostic server for publishing, broadcasting, and recording Virtual Observatory Events (VOEvents) for detections of Fast Radio Bursts (FRBs). Telescopes and observatories that are actively detecting or following up FRBs in the radio regime can establish a subscription-based FRB VOEvent service using `frb-voe`. The core functionality of the code base is the following tasks:
 
-- Publish VOEvents that follow an extension to the FRB VOEvent Standard originally prescribed in [Petroff et al. 2017](https://arxiv.org/abs/1710.08155) and broadcast them using the Comet broker.
-- Maintain a database of subscribers that can receive the VOEvent broadcast from the Comet broker.
+- Publish VOEvents that follow an extension to the FRB VOEvent Standard originally prescribed in [Petroff et al. 2017](https://arxiv.org/abs/1710.08155) and broadcast them using the Comet broker and/or an SMTP email server.
+- Maintain and interact with a database of VOEvent metadata and subscribers information.
 - Submit FRBs to the [Transient Name Server](https://www.wis-tns.org) (TNS).
+
+![frb-voe-workflow](/frb-voe-workflow.png?raw=true "The frb-voe Workflow")
 
 
 # Installation
