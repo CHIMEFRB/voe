@@ -2,6 +2,8 @@
 
 import click
 
+from frbvoe.backend.tns import TNS
+
 
 @click.group(name="tns", help="TNS Tools.")
 def tns():
@@ -10,13 +12,14 @@ def tns():
 
 
 @tns.command("submit", help="Submit an FRB to the TNS.")
-@click.option("--username", help="TNS username.")
 @click.option(
-    "--period", default=2, help="Proprietary period of the FRB.", show_default=True
+    "--period", default=10, help="Proprietary period of the FRB.", show_default=True
 )
 @click.option(
-    "--sandbox", help="Set to False when submitting to the live TNS.", show_default=True
+    "--sandbox",
+    help="Submit to the sandbox TNS (if True) or live TNS (if False).",
+    show_default=True,
 )
-def send(username, period, sandbox):
+def submit(proprietary_period, sandbox):
     """Submit an FRB to the TNS."""
-    click.echo(f"submit FRB to TNS. {username} {period} {sandbox}")
+    TNS.submit(proprietary_period, sandbox)
