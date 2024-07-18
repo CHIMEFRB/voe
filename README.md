@@ -25,17 +25,18 @@ First, `cd` into your preferred path `/my/path` and clone the repository.
 git clone git@github.com:CHIMEFRB/voe.git
 ```
 
-Now, install `poetry` with
+Now, move into the repo:
 
 ```
-pip install poetry
+cd voe
 ```
 
-Then install the requirements using `poetry` by running the following in the top-level folder where the `poetry.lock` file is found.
+And build the docker container and initialize the servers and database:
 
 ```
-poetry install
+docker compose build
 ```
+
 
 # Getting Started
 
