@@ -31,7 +31,7 @@ Now, move into the repo:
 cd voe
 ```
 
-And build the docker container and initialize the servers and database:
+And build the docker container and initialize the servers and database. If you do not have docker installed on your system, instructions can be found here: https://docs.docker.com/get-docker/.
 
 ```
 docker compose build
