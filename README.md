@@ -41,11 +41,21 @@ Note: MongoDB is set to run at port 27017 by default. Ensure nothing is running 
 
 # Getting Started
 
+## Environment Variables
+
+Certain aspects of the service (such as SMTP servers and interactions with the TNS) require sensitive information such as passwords and API keys. To use these services, it is recommended that you pass these secrets as environment variables. These must be added to your bash profile with the following naming convention.
+
+- FRB_VOE_EMAIL_ADDRESS
+- FRB_VOE_EMAIL_PASSWORD
+- FRB_VOE_TNS_API_KEY
+- FRB_VOE_TNS_BOT_NAME
+- FRB_VOE_TNS_BOT_ID
+
+To obtain a TNS API key, bot name, and bot ID, proceed to the next section.
+
 ## Registering on the TNS
 
-The TNS is the official IAU-recognized distributor and maintainer of the naming scheme for FRBs, as previously announced in the FRB 2020 virtual conference (watch the first presentation in Session 11 from the conference [here](https://www.youtube.com/watch?v=mgqXDtYDPJE&list=PLPIVxyomLL89sdsz770tYRWJL048H5CtE&index=11&t=394s&ab_channel=FRB2020)).
-
-All programmatic requests to the TNS require authentication. This in turn requires registration on the TNS web portal. To complete the registration process and obtain required authorization, follow these steps:
+The TNS is the official IAU-recognized distributor and maintainer of the naming scheme for FRBs. All programmatic requests to the TNS require authentication. This in turn requires registration on the TNS web portal. To complete the registration process and obtain required authorization, follow these steps:
 
 1. Request a User Account [here](https://www.wis-tns.org/user/register). If you had additional team members who will manage your TNS data, they should also create a User Account.
 2. Log in [here](https://www.wis-tns.org/user).
@@ -53,27 +63,41 @@ All programmatic requests to the TNS require authentication. This in turn requir
 4. Add a TNS bot [here](https://www.wis-tns.org/bots). This is required in order to obtain the credentials that are needed for making programmatic requests to the TNS via the API that is embedded in `frb-voe`.
 5. Once your TNS bot has been created, it will appear in the table on [this](https://www.wis-tns.org/bots) page. In the rightmost column you can click *edit* to view or change its properties. In particular, the *Edit Bot* page allows one to create a new API key for the bot at any time.
 6. From the *Edit Bot* page, one can obtain values for the environment variables that are required to use the TNS functionality of `frb-voe`.
-    - `TNS_API_KEY` from the API alphanumeric key value.
-    - `TNS_API_ID` from the `"tns_id"` key in the `User-Agent` specification.
-    - `TNS_API_BOT_NAME` from the `"name"` key in the `User-Agent` specification.
-7. set the following environment variables using the values that were provided to you or your organization when registering for usage of the TNS.
+    - `FRB_VOE_TNS_API_KEY` from the API alphanumeric key value.
+    - `FRB_VOE_TNS_BOT_ID` from the `"tns_id"` key in the `User-Agent` specification.
+    - `FRB_VOE_TNS_BOT_NAME` from the `"name"` key in the `User-Agent` specification.
+
+# frb-voe Client User Interface (CLI) Usage
+
+**Once the frb-voe backend is started**, a dedicated CLI can be used for all interactions software.
+
+## Interacting with the frb-voe Server
+
 ```
-export TNS_API_KEY=""       # Alphanumeric API key for your TNS bot
-export TNS_API_TNS_ID=""    # ID number for your TNS bot
-export TNS_API_BOT_NAME=""  # Name of your TNS bot
+poetry run frb-voe voe [COMMAND] [OPTIONS]
+```
+### Send a VOEvent
+
+```
+poetry run frb-voe voe send --help
+```
+
+## Interact with the Subscriber Database
+
+```
+poetry run frb-voe subscriber [COMMAND] [OPTIONS]
+```
+### Adding a subscriber
+
+```
+poetry run frb-voe subscriber add --help
 ```
 
 ## Interact with the TNS
 
-**Once the frb-voe backend is started**, a dedicated CLI can be used for all interactions with the [Transient Name Server](https://www.wis-tns.org/). The command signature is the following:
-
 ```
 poetry run frb-voe tns [COMMAND] [OPTIONS]
 ```
-Be sure that:
-1. The environment variables are properly set
-2. You're in the `frb-voe` conda environment
-3. Run `poetry run maestro start` to start the server
 
 ### Submit an FRB
 
@@ -89,18 +113,3 @@ The help dialogue will explain what options are required and what data is needed
 - proprietary period length (in years)
 
 Optionally, one can practice the submission by setting the `--sandbox` flag in the call signature.
-
-# NOTES: 
-
-Layout:
-- observatory will send an HTML request contiaining all the information needed to create a VOEvent to voe.
-- voe will validate the dictionary using Pydantic, publish it to comet and save it to a MongoDB
-- voe will periodically check the MongoDB for new subscribers and for newly retracted FRBs
-- voe will also be able to submit FRBs from the MongoDB to the TNS through a CLI
-
-Environment variables: To use the service, you must have the following environment variables defined in your bash profile.
-- FRB_VOE_TNS_API_KEY
-- FRB_VOE_TNS_BOT_NAME
-- FRB_VOE_TNS_BOT_ID
-- FRB_VOE_EMAIL_ADDRESS
-- FRB_VOE_EMAIL_PASSWORD
