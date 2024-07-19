@@ -74,29 +74,29 @@ The TNS is the official IAU-recognized distributor and maintainer of the naming 
 ## Interacting with the frb-voe Server
 
 ```
-poetry run frb-voe voe [COMMAND] [OPTIONS]
+poetry run frbvoe voe [COMMAND] [OPTIONS]
 ```
 ### Send a VOEvent
 
 ```
-poetry run frb-voe voe send --help
+poetry run frbvoe voe send --help
 ```
 
 ## Interact with the Subscriber Database
 
 ```
-poetry run frb-voe subscriber [COMMAND] [OPTIONS]
+poetry run frbvoe subscriber [COMMAND] [OPTIONS]
 ```
 ### Adding a subscriber
 
 ```
-poetry run frb-voe subscriber add --help
+poetry run frbvoe subscriber add --help
 ```
 
 ## Interact with the TNS
 
 ```
-poetry run frb-voe tns [COMMAND] [OPTIONS]
+poetry run frbvoe tns [COMMAND] [OPTIONS]
 ```
 
 ### Submit an FRB
@@ -104,7 +104,7 @@ poetry run frb-voe tns [COMMAND] [OPTIONS]
 When you have the event number of a FRB Candidate that needs to be submitted to the TNS, use the following command to acquire the TNS name.
 
 ```
-poetry run frb-voe tns submit --help
+poetry run frbvoe tns submit --help
 ```
 
 The help dialogue will explain what options are required and what data is needed from the user. These include:
