@@ -57,8 +57,8 @@ def subscriber():
         name="John Smith",
         contact_email="john.smith@email.com",
         requested_service="xmls",
-        subscriber_email="bot.email@email.com"
-        ip_address="123.89.46.72"
+        subscriber_email="bot.email@email.com",
+        ip_address="123.89.46.72",
     )
     
 @pytest.fixture

@@ -82,7 +82,3 @@ services:
       - "27017:27017"
     volumes:
       - ./frbvoe-data:/data/db
-  
-  # install:
-  #   image: python:3.8
-  #   command: ["poetry install"]
