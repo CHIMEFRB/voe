@@ -36,6 +36,7 @@ And build the docker container and initialize the servers and database:
 ```
 docker compose build
 ```
+Note: MongoDB is set to run at port 27017 by default. Ensure nothing is running at this port, or, choose another port by changing the SANIC_MONGODB_PORT variable in the docker-compose.yaml file (and the corresponding ports in the mongo configuration). 
 
 
 # Getting Started
