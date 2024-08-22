@@ -3,6 +3,8 @@
 import click
 
 from frbvoe.cli.voe import voe
+from frbvoe.cli.tns import tns
+from frbvoe.cli.subscriber import subscriber
 
 
 @click.group()
@@ -18,3 +20,5 @@ def version():
 
 
 cli.add_command(voe)
+cli.add_command(tns)
+cli.add_command(subscriber)
