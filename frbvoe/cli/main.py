@@ -2,9 +2,9 @@
 
 import click
 
-from frbvoe.cli.voe import voe
-from frbvoe.cli.tns import tns
 from frbvoe.cli.subscriber import subscriber
+from frbvoe.cli.tns import tns
+from frbvoe.cli.voe import voe
 
 
 @click.group()

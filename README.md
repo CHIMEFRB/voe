@@ -113,3 +113,14 @@ The help dialogue will explain what options are required and what data is needed
 - proprietary period length (in years)
 
 Optionally, one can practice the submission by setting the `--sandbox` flag in the call signature.
+
+
+### Contributing
+
+All motivated community members are welcomed and encouraged to contribute to the frb-voe Service. Contributions should be initiated with an issue and corresponding development branch. We encourage users to write tests for their contributed code, which can be run locally using: 
+
+```poetry run pytest --cov-report=html --cov .```
+
+The repository is formatted according to pre-commit, to run pre-commit locally, use: 
+
+```pre-commit run --all-files```

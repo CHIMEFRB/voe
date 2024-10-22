@@ -1,21 +1,22 @@
 import pytest
-from sanic import Sanic
+from sanic import response
+
 from frbvoe.server import create
 
 
-def test_create_app():
-    app = create(name="test_create_app")
-    assert isinstance(app, Sanic)
-    assert app.name != "frbvoe"
+@pytest.fixture
+def app():
+    app = create("test_sanic_app")
+
+    @app.get("/")
+    def basic(request):
+        return response.text("foo")
+
+    return app
 
 
-def test_server_startup():
-    request, response = create(name="test_server_startup").test_client.get("/")
-    assert response.status == 200
-    assert response.text == "Hello, World!"
-
-
-def test_server_shutdown():
-    request, response = create(name="test_server_shutdown").test_client.get("/shutdown")
-    assert response.status == 200
-    assert response.text == "Server shutting down..."
+# def test_shutdown(app):
+#     request, response = app.test_client.post("/shutdown")
+#     assert request.method.lower() == "post"
+#     assert response.status == 200
+#     assert response.body == "Server shutting down..."

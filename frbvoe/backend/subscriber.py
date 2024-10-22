@@ -1,13 +1,14 @@
 """Subscriber Server Blueprint."""
 
 import picologging as logging
-from models.subscriber import Subscriber
 from pymongo.errors import PyMongoError
 from sanic import Blueprint
 from sanic.log import logger
 from sanic.request import Request
 from sanic.response import json as json_response
 from sanic_ext import openapi
+
+from frbvoe.models.subscriber import Subscriber
 
 logging.basicConfig()
 log = logging.getLogger()
@@ -22,7 +23,6 @@ voe = Blueprint("voe", url_prefix="/")
 )
 # Add the subscriber payload to the MongoDB Database
 async def add_subscriber(request: Request):
-    # TODO: Shiny, should I add subscriber: Subscriber?
     """Adds a subscriber document to the database.
 
     Args:

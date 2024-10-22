@@ -18,7 +18,7 @@ from pydantic import (
 # from pydantic_settings import BaseSettings, SettingsConfigDict
 from sanic import Request
 
-from frbvoe.utilities.email import send_email  # TODO: check this import
+from frbvoe.utilities.email import send_email
 
 logging.basicConfig()
 log = logging.getLogger()
@@ -72,38 +72,20 @@ class VOEvent(BaseModel):  # BaseSettings
         VOEvent: VOEvent object.
     """
 
-    # model_config = SettingsConfigDict(  # TODO: Shiny is this needed?
-    #     title="FRB VOEvent",
-    #     validate_assignment=True,
-    #     validate_return=True,
-    #     revalidate_instances="always",
-    #     # This parameter ignores any extra fields that are not defined in the model
-    #     extra="ignore",
-    # )
     comet_port: int = Field(
         default=8098, description="Port of the Comet broker. Default is 8098. Optional."
     )
     email_password: SecretStr = Field(
         default=None, description="VOEvent author email account password. Optional."
     )
-    kind: Literal[
-        "detection",
-        "subsequent",
-        "retraction",
-        "update",
-    ] = Field(..., description="Which kind of VOEvent. Required.", example="detection")
+    kind: Literal["detection", "subsequent", "retraction", "update"] = Field(
+        ..., description="Which kind of VOEvent. Required.", example="detection"
+    )
     observatory_name: StrictStr = Field(
         ..., description="Name of the host observatory. Required.", example="CHIME"
     )
-    # date: datetime = Field(
-    #     ...,
-    #     gt=datetime(2024, 1, 1),  # release date of frb-voe
-    #     description="Detection time of the FRB. Required.",
-    #     example="2020-01-13 16:55:08.844845",
-    # )
     date: StrictStr = Field(
         ...,
-        # release date of frb-voe
         description="Detection time of the FRB. Required.",
         example="2020-01-13 16:55:08.844845",
     )
@@ -200,8 +182,7 @@ class VOEvent(BaseModel):  # BaseSettings
         default=None,
         ge=0.0,
         le=360.0,
-        description="""Right acension of the FRB in degrees
-        in degrees (0 < RA < 360). Required.""",
+        description="Right acension of the FRB in degrees (0 < RA < 360). Required.",
         example=55.2938,
     )
     declination: float = Field(
@@ -221,8 +202,8 @@ class VOEvent(BaseModel):  # BaseSettings
         default=None,
         ge=0.0,
         le=1.0,
-        description="Importance of the FRB (0 < Importance < 1). Optional.",
-        example=0.9979,
+        description="Importance of the FRB (0 ≤ Importance ≤ 1). Optional.",
+        example=0.99,
     )
     website: Optional[StrictStr] = Field(
         default=None,
@@ -255,10 +236,8 @@ class VOEvent(BaseModel):  # BaseSettings
             comet_port (SecretInt) : Port of the comet broker. Optional
         """
         log.info("Sending VOE payload to Comet as a report.")
-        # vp.dump(voevent=comet_report, xml_declaration=False, file="temp_voe.txt")
-        response = requests.post(
-            "http://comet:8098/", json=comet_report
-        )  # TODO: check comet endpoint
+        response = requests.post("http://comet:8098/", json=comet_report)
+        # TODO: check comet endpoint
         return response.status_code == 200
 
     @property
@@ -274,7 +253,7 @@ class VOEvent(BaseModel):  # BaseSettings
         log.info("Emailing VOE payload to subscribers.")
         send_email(email_report)
 
-    @staticmethod  # TODO: Shiny what's this for?
+    @staticmethod
     async def compile(request: Request):
         """Extracts data from request and returns object.
 

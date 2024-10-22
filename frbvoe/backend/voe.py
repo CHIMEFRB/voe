@@ -20,7 +20,7 @@ voe = Blueprint("voe", url_prefix="/")
 @voe.post("create_voe")
 @openapi.response(201, description="Creates an FRB VOEvent.")
 # Process a new VOEvent (validate, send to Comet, send to Email, save to MongoDB)
-async def create_voe(request: Request):  # TODO: Shiny, should I add voe_event: VOEvent?
+async def create_voe(request: Request):
     """Process a VOEvent.
 
     Args:

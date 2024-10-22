@@ -1,7 +1,5 @@
 """Test for VOE model."""
 
-# from typing import Dict
-
 import pytest
 from pydantic import ValidationError
 

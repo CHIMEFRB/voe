@@ -76,6 +76,13 @@ def create(name: str = "frbvoe", debug: bool = False) -> Sanic:
     app.blueprint(voe_blueprint)
     # ? Listeners
     app.register_listener(mongo, "before_server_start")
+
+    # add an option for client(app).get("/shutdown") to shutdown the server
+    @app.route("/shutdown")
+    async def shutdown(request):
+        await app.ctx.mongo.close()
+        return app.text("Server shutting down...")
+
     return app
 
 

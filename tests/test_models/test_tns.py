@@ -31,6 +31,8 @@ sample_request = {
     "website": "https://www.example.com",
     "tns_name": "FRB20210826A",
     "update_message": "",
+    "period": 30,
+    "sandbox": True,
 }
 
 

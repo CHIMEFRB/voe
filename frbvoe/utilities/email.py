@@ -1,5 +1,6 @@
-"""this function sends an email."""
+"""This function is a utility to send a VOEvent email."""
 
+# This function requires some user customization, depending on the user preferences.
 # import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -8,9 +9,9 @@ import picologging as logging
 
 # from typing import Any, Dict
 
-
 logging.basicConfig()
 log = logging.getLogger()
+
 
 def send_email(email_report):
     """Sends an email with the provided email_report.
@@ -26,7 +27,6 @@ def send_email(email_report):
     Raises:
         None
     """
-    
     subject = f"{email_report['observatory_name']}_VOE_{email_report['kind']}"
     if email_report["kind"] in ["detection", "subsequent"]:
         email_message = f"""
@@ -60,7 +60,7 @@ def send_email(email_report):
             the public {email_report['observatory_name']} frb-voe Service.
             To unsubscribe, please contact {email_report['email']}.
         """
-    if email_report['kind'] == "retraction":
+    if email_report["kind"] == "retraction":
         email_message = f"""
             {email_report['kind']}-type VOEvent\n
             \n
@@ -92,8 +92,8 @@ def send_email(email_report):
             the public {email_report['observatory_name']} frb-voe Service.
             To unsubscribe, please contact {email_report['email']}.
         """
-    if email_report['kind'] == "update":
-        email_message = email_report['update_message']
+    if email_report["kind"] == "update":
+        email_message = email_report["update_message"]
 
     # Email configuration
     receiver_email = "john.smith@email.com"  # TODO: load from DB
@@ -102,13 +102,10 @@ def send_email(email_report):
 
     # Create a message
     message = MIMEMultipart()
-    message["From"] = email_report['email']
+    message["From"] = email_report["email"]
     message["To"] = receiver_email
     message["Subject"] = subject
     message.attach(MIMEText(email_message, "plain"))
-
-    # print email message
-    print(email_message)
 
     # # Connect to the SMTP server
     # server = smtplib.SMTP(smtp_server, smtp_port)

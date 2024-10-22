@@ -1,11 +1,12 @@
 """Testing for VOEvent object."""
 
 import datetime
+
 import pytest
 
-from frbvoe.models.voe import VOEvent
 from frbvoe.models.subscriber import Subscriber
 from frbvoe.models.tns import TNS
+from frbvoe.models.voe import VOEvent
 
 
 @pytest.fixture
@@ -46,6 +47,7 @@ def voe():
         flux=4.9,
     )
 
+
 @pytest.fixture
 def subscriber():
     """Generate a Subscriber object for testing.
@@ -60,16 +62,17 @@ def subscriber():
         subscriber_email="bot.email@email.com",
         ip_address="123.89.46.72",
     )
-    
+
+
 @pytest.fixture
 def tns():
-    """ Generate a TNS object for testing.
-    
+    """Generate a TNS object for testing.
+
     Returns:
         TNS: TNS object.
     """
     return TNS(
-        tns_api_key="apikey123",
+        tns_api_key="",
         tns_report_id=123,
         tns_bot_name="botname",
         kind="detection",
@@ -101,4 +104,3 @@ def tns():
         snr=13.8,
         flux=4.9,
     )
-    
