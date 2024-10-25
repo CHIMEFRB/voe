@@ -41,6 +41,9 @@ Note: MongoDB is set to run at port 27017 by default. Ensure nothing is running 
 
 # Getting Started
 
+## Configuring Your Observatory
+The `frb-voe` software operates using HTTP requests, in order to initiate the publication of a VOEvent from your observatory, a correctly formatted HTTP request must be sent to your `frb-voe` server. This request is required to contain the burst metadata (for "detection" and "subsequent" type VOEvents, or an update message or internal ID for "update" and "retraction" type VOEvents, respectively). This can be accomplished manually, or from an automated request being sent from the host observatory to the `frb-voe` server upon detection of a new event. An example script demonstrating this is provided in the `examples` directory.
+
 ## Environment Variables
 
 Certain aspects of the service (such as SMTP servers and interactions with the TNS) require sensitive information such as passwords and API keys. To use these services, it is recommended that you pass these secrets as environment variables. These must be added to your bash profile with the following naming convention.
