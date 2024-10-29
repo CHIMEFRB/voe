@@ -1,8 +1,10 @@
+"""A script to send a request from the host observatory to the frb-voe server."""
+
 import logging
 
 import requests
 
-# Define any parameters you want to send along with the request (if any)
+# Define any parameters you want to send along with the request
 detection_example_payload = {
     "kind": "detection",
     "date": "2025-01-13 16:55:08.844845",
