@@ -38,6 +38,8 @@ docker compose build
 ```
 Note: MongoDB is set to run at port 27017 by default. Ensure nothing is running at this port, or, choose another port by changing the SANIC_MONGODB_PORT variable in the docker-compose.yaml file (and the corresponding ports in the mongo configuration). 
 
+# Configuring Your Observatory
+To ensure the interface between the `frb-voe` server and the host observatory are as seemless as possible, HTTP requests are used. To initiate an FRB VOEvent, the host observatory must send a request to the `frb-voe` server containing basic FRB metadata. An example of such a request as well as a template script to send the request can be found in the `examples` directory.
 
 # Getting Started
 
